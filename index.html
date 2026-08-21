@@ -787,7 +787,7 @@ textarea{min-height:90px; resize:vertical}
     var c = document.getElementById('cal');
     c.innerHTML = '';
     AGENDA.forEach(function(a,i){
-      var idx = (i+1)%7;                      /* domingo = 0 */
+      var idx = i;                            /* AGENDA ya empieza en domingo = 0 */
       var el = document.createElement('div');
       el.className = 'day' + (a.kino ? ' on' : '');
       var li = a.otros.map(function(o){ return '<li>'+o+'</li>'; }).join('');
