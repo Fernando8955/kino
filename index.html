@@ -58,6 +58,7 @@
 }
 
 *{box-sizing:border-box}
+[hidden]{display:none !important}
 body{
   margin:0; background:var(--ground); color:var(--text);
   font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
@@ -290,6 +291,16 @@ textarea{min-height:90px; resize:vertical}
 }
 .pending strong{font-weight:700}
 .pending button{margin-left:auto}
+.foot-end{
+  display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;
+  margin-top:1.7rem; padding-top:1rem; border-top:1px solid var(--line-soft);
+  font-size:.72rem; color:var(--text-3);
+}
+.panel-link{
+  background:none; border:0; font:inherit; color:var(--text-3);
+  cursor:pointer; padding:.2rem .3rem; border-radius:5px;
+}
+.panel-link:hover,.panel-link:focus-visible{color:var(--gold)}
 .demo-tag{
   position:fixed; left:1rem; bottom:1rem; z-index:30; font-family:"IBM Plex Mono",monospace;
   font-size:.68rem; letter-spacing:.06em; color:var(--text-3); background:var(--surface);
@@ -309,7 +320,6 @@ textarea{min-height:90px; resize:vertical}
     </nav>
     <div class="top-actions">
       <button class="btn ghost" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
-      <button class="btn" id="openPanel">Panel</button>
     </div>
   </div>
 </header>
@@ -509,6 +519,10 @@ textarea{min-height:90px; resize:vertical}
         <li>Si necesitas orientación, consulta a Salud Responde: 600 360 7777.</li>
       </ul>
     </div>
+  </div>
+  <div class="wrap foot-end">
+    <span>Kino del Sur · sitio informativo independiente</span>
+    <button type="button" class="panel-link" id="openPanel" title="Panel de carga">Panel</button>
   </div>
 </footer>
 
@@ -978,6 +992,7 @@ textarea{min-height:90px; resize:vertical}
   tick();
   setInterval(tick, 1000);
   document.getElementById('pendingOpen').addEventListener('click', abrirPanel);
+  if(location.hash === '#panel') abrirPanel();
 
   fetch('resultados.json', {cache:'no-store'})
     .then(function(r){ return r.ok ? r.json() : null; })
