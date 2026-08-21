@@ -369,7 +369,7 @@ textarea{min-height:90px; resize:vertical}
         <span class="eyebrow">Archivo</span>
         <h2>Historial de resultados</h2>
       </div>
-      <p>Todos los sorteos publicados, del más reciente al más antiguo.</p>
+      <p>Los últimos 20 sorteos publicados, del más reciente al más antiguo.</p>
     </div>
     <div class="table-wrap">
       <table>
@@ -555,7 +555,7 @@ textarea{min-height:90px; resize:vertical}
           <button class="btn primary" type="button" id="copiarJson">Copiar todo</button>
           <button class="btn ghost" type="button" id="yaPublique">Ya lo pegué en el sitio</button>
         </div>
-        <p class="hint">Copia este texto y pégalo completo en el archivo <strong>resultados.json</strong>, reemplazando lo que había. En cuanto guardes, el sitio muestra el resultado a todo el mundo.</p>
+        <p class="hint">Copia este texto y pégalo completo en el archivo <strong>resultados.json</strong>, reemplazando lo que había. En cuanto guardes, el sitio muestra el resultado a todo el mundo. El archivo conserva siempre los últimos 20 sorteos; los más antiguos salen solos.</p>
       </div>
     </form>
   </div>
@@ -623,8 +623,10 @@ textarea{min-height:90px; resize:vertical}
   try { pendientes = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ pendientes = []; }
   function guardar(){ try{ localStorage.setItem(KEY, JSON.stringify(pendientes)); }catch(e){} }
 
+  var TOPE = 20;   /* el sitio muestra y guarda siempre los últimos 20 sorteos */
+
   function armar(){
-    hist = pendientes.concat(remotos);
+    hist = pendientes.concat(remotos).slice(0, TOPE);
     var bar = document.getElementById('pendingBar');
     if(pendientes.length){
       bar.hidden = false;
@@ -913,7 +915,7 @@ textarea{min-height:90px; resize:vertical}
     box.hidden = false;
     var txt = function(v){ return v ? '"'+v+'"' : 'null'; };
     document.getElementById('jsonOut').value = '[\n' +
-      pendientes.concat(remotos).map(function(x){
+      pendientes.concat(remotos).slice(0, TOPE).map(function(x){
         return '  {\n' +
           '    "numero": '    + (x.numero || 'null') + ',\n' +
           '    "fecha": "'    + x.fecha + '",\n' +
