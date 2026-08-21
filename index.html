@@ -1,0 +1,1011 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kino del Sur</title>
+<meta name="description" content="Resultados oficiales del Kino y calendario de las loterías de Chile.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;600&display=swap">
+<style>
+/* ---------- tokens: tema claro (base) ---------- */
+:root{
+  --ground:#f2f4fa;
+  --surface:#ffffff;
+  --surface-2:#e9ecf6;
+  --line:#d9dded;
+  --line-soft:#e8ebf5;
+  --text:#161a2b;
+  --text-2:#4b5270;
+  --text-3:#7f87a3;
+  --gold:#9a6b12;
+  --gold-ink:#7a5309;
+  --gold-soft:#f7ecd2;
+  --rojo:#bc182f;
+  --mint:#0f7a59;
+  --ball-bg:#1a1f33;
+  --ball-text:#f3dfae;
+  --ball-line:#2c3352;
+  --shadow:0 1px 2px rgba(18,22,42,.05),0 10px 30px -18px rgba(18,22,42,.35);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0d1019;
+    --surface:#151a29;
+    --surface-2:#1c2234;
+    --line:#272e45;
+    --line-soft:#1f2537;
+    --text:#eef0f8;
+    --text-2:#a7aec8;
+    --text-3:#767e9c;
+    --gold:#e8b23a;
+    --gold-ink:#f2cd7c;
+    --gold-soft:#2a2413;
+    --rojo:#f2576d;
+    --mint:#4fd1a5;
+    --ball-bg:#e8b23a;
+    --ball-text:#191405;
+    --ball-line:#c9962b;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -24px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0d1019; --surface:#151a29; --surface-2:#1c2234; --line:#272e45; --line-soft:#1f2537;
+  --text:#eef0f8; --text-2:#a7aec8; --text-3:#767e9c;
+  --gold:#e8b23a; --gold-ink:#f2cd7c; --gold-soft:#2a2413;
+  --rojo:#f2576d; --mint:#4fd1a5;
+  --ball-bg:#e8b23a; --ball-text:#191405; --ball-line:#c9962b;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -24px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--text);
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+  font-variation-settings:"wdth" 100;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0; text-wrap:balance; font-variation-settings:"wdth" 112; letter-spacing:-.015em}
+p{margin:0}
+a{color:inherit}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.serif{font-family:"Source Serif 4",Georgia,serif}
+.wrap{width:min(1180px,100% - 2.5rem); margin-inline:auto}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace; font-size:.68rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--text-3);
+}
+
+/* ---------- topbar ---------- */
+header.top{
+  position:sticky; top:0; z-index:40;
+  background:color-mix(in srgb,var(--ground) 88%, transparent);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.top-in{display:flex; align-items:center; gap:1.25rem; padding:.7rem 0; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:.6rem; font-weight:800; font-size:1.05rem;
+  font-variation-settings:"wdth" 118; letter-spacing:-.02em}
+.brand .dot{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--ball-bg); color:var(--ball-text);
+  display:grid;place-items:center;font-size:.7rem;font-weight:800;
+  border:1px solid var(--ball-line);
+}
+nav.main{display:flex; gap:1.1rem; margin-inline:auto; flex-wrap:wrap}
+nav.main a{
+  text-decoration:none; font-size:.85rem; font-weight:500; color:var(--text-2);
+  padding:.25rem 0; border-bottom:1px solid transparent;
+}
+nav.main a:hover,nav.main a:focus-visible{color:var(--text); border-bottom-color:var(--gold)}
+.top-actions{display:flex; gap:.5rem; align-items:center}
+.btn{
+  font:inherit; font-size:.82rem; font-weight:600; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface); color:var(--text);
+  padding:.45rem .8rem; border-radius:9px; transition:border-color .15s, transform .1s;
+}
+.btn:hover{border-color:var(--gold)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--ball-bg); color:var(--ball-text); border-color:var(--ball-line)}
+.btn.ghost{background:transparent}
+:focus-visible{outline:2px solid var(--gold); outline-offset:2px; border-radius:4px}
+
+/* ---------- hero ---------- */
+.hero{padding:2.5rem 0 1.5rem; display:grid; grid-template-columns:1.55fr .95fr; gap:1.5rem; align-items:start}
+@media(max-width:940px){.hero{grid-template-columns:1fr}}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow)}
+.board{padding:1.6rem 1.6rem 1.3rem; position:relative; overflow:hidden}
+.board::before{
+  content:""; position:absolute; inset:0 auto auto 0; height:3px; width:100%;
+  background:linear-gradient(90deg,var(--rojo),var(--gold) 60%,transparent);
+}
+.board-head{display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap}
+.board h1{font-size:clamp(1.5rem,3.4vw,2.1rem); font-weight:800; line-height:1.05}
+.board .fecha{color:var(--text-2); font-size:.92rem; margin-top:.35rem}
+.board .fecha::first-letter{text-transform:uppercase}
+.badge{
+  display:inline-flex; align-items:center; gap:.4rem; font-size:.7rem; font-weight:600;
+  letter-spacing:.08em; text-transform:uppercase; padding:.3rem .6rem; border-radius:999px;
+  border:1px solid color-mix(in srgb,var(--mint) 45%,transparent); color:var(--mint);
+  background:color-mix(in srgb,var(--mint) 12%,transparent); font-family:"IBM Plex Mono",monospace;
+}
+.badge.wait{color:var(--text-3); border-color:var(--line); background:var(--surface-2)}
+.badge .pulse{width:6px;height:6px;border-radius:50%;background:currentColor}
+@media (prefers-reduced-motion:no-preference){
+  .badge .pulse{animation:pulse 2.2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+}
+.balls{display:grid; grid-template-columns:repeat(7,1fr); gap:.55rem; margin:1.4rem 0 .3rem}
+@media(max-width:520px){.balls{grid-template-columns:repeat(5,1fr)}}
+.ball{
+  aspect-ratio:1; border-radius:50%; display:grid; place-items:center;
+  background:var(--ball-bg); color:var(--ball-text); border:1px solid var(--ball-line);
+  font-family:"IBM Plex Mono",monospace; font-weight:600;
+  font-size:clamp(.95rem,2.2vw,1.25rem); font-variant-numeric:tabular-nums;
+}
+@media (prefers-reduced-motion:no-preference){
+  .ball{animation:drop .45s cubic-bezier(.22,1,.36,1) backwards}
+  @keyframes drop{from{transform:translateY(-10px) scale(.85); opacity:0}to{transform:none;opacity:1}}
+}
+.board-foot{display:flex; gap:1.4rem; flex-wrap:wrap; border-top:1px solid var(--line-soft); margin-top:1.1rem; padding-top:.9rem}
+.stat{display:flex; flex-direction:column; gap:.15rem}
+.stat .v{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:1rem}
+
+/* ---------- rail ---------- */
+.rail{display:flex; flex-direction:column; gap:1.5rem}
+.pozo{padding:1.4rem 1.4rem 1.2rem; background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--radius); box-shadow:var(--shadow)}
+.pozo .amount{
+  font-family:"IBM Plex Mono",monospace; font-weight:600;
+  font-size:clamp(1.7rem,4.4vw,2.3rem); color:var(--gold); letter-spacing:-.03em; margin:.35rem 0 .1rem;
+}
+.countdown{display:flex; gap:.5rem; margin-top:1rem}
+.cd-unit{flex:1; text-align:center; background:var(--surface-2); border:1px solid var(--line-soft);
+  border-radius:10px; padding:.5rem .2rem}
+.cd-unit b{display:block; font-family:"IBM Plex Mono",monospace; font-size:1.25rem; font-weight:600}
+.cd-unit span{font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-3)}
+.mini-list{list-style:none; margin:.6rem 0 0; padding:0; display:flex; flex-direction:column}
+.mini-list li{display:flex; justify-content:space-between; align-items:center; gap:.6rem;
+  padding:.55rem 0; border-top:1px solid var(--line-soft); font-size:.85rem}
+.mini-list .nums{font-family:"IBM Plex Mono",monospace; color:var(--text-2); font-size:.78rem}
+
+/* ---------- secciones ---------- */
+section{padding:2.6rem 0; border-top:1px solid var(--line)}
+.sec-head{display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; flex-wrap:wrap; margin-bottom:1.3rem}
+.sec-head h2{font-size:clamp(1.15rem,2.4vw,1.5rem); font-weight:700}
+.sec-head p{color:var(--text-2); font-size:.9rem; max-width:56ch}
+.table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:.88rem}
+th{
+  text-align:left; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-3);
+  font-weight:600; padding:.75rem 1rem; border-bottom:1px solid var(--line); white-space:nowrap;
+}
+td{padding:.7rem 1rem; border-bottom:1px solid var(--line-soft); font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right; font-family:"IBM Plex Mono",monospace}
+tr.hi td{background:var(--gold-soft); color:var(--gold-ink); font-weight:600}
+
+/* estadísticas */
+.stats-grid{display:grid; grid-template-columns:1.5fr 1fr; gap:1.5rem}
+@media(max-width:860px){.stats-grid{grid-template-columns:1fr}}
+.freq{padding:1.3rem}
+.freq-row{display:grid; grid-template-columns:2.2rem 1fr 2rem; align-items:center; gap:.6rem; padding:.16rem 0}
+.freq-row b{font-family:"IBM Plex Mono",monospace; font-size:.78rem; font-weight:500; color:var(--text-2)}
+.bar{height:9px; border-radius:5px; background:var(--surface-2); overflow:hidden}
+.bar i{display:block; height:100%; border-radius:5px; background:linear-gradient(90deg,var(--rojo),var(--gold))}
+.freq-row span{font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--text-3); text-align:right}
+.kpis{display:grid; gap:1rem; align-content:start}
+.kpi{padding:1.1rem 1.2rem}
+.kpi .v{font-family:"IBM Plex Mono",monospace; font-size:1.6rem; font-weight:600; color:var(--gold); margin-top:.2rem}
+.kpi .d{font-size:.8rem; color:var(--text-2); margin-top:.3rem}
+.chips{display:flex; gap:.35rem; flex-wrap:wrap; margin-top:.5rem}
+.chip{font-family:"IBM Plex Mono",monospace; font-size:.78rem; padding:.22rem .5rem; border-radius:7px;
+  border:1px solid var(--line); background:var(--surface-2)}
+.chip.hot{border-color:color-mix(in srgb,var(--rojo) 45%,transparent); color:var(--rojo)}
+.chip.cold{border-color:color-mix(in srgb,var(--mint) 45%,transparent); color:var(--mint)}
+
+/* otras loterías */
+.lot-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(285px,1fr)); gap:1rem}
+.lot{padding:1.2rem 1.25rem 1.1rem; display:flex; flex-direction:column; gap:.55rem}
+.lot-top{display:flex; align-items:center; gap:.6rem}
+.lot-mark{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:none;
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.72rem;
+  border:1px solid var(--line); background:var(--surface-2); color:var(--text-2)}
+.lot h3{font-size:1rem; font-weight:700}
+.lot .op{font-size:.7rem; color:var(--text-3); font-family:"IBM Plex Mono",monospace}
+.lot .desc{font-family:"Source Serif 4",Georgia,serif; font-size:.92rem; line-height:1.5; color:var(--text-2)}
+.lot dl{display:grid; grid-template-columns:auto 1fr; gap:.25rem .7rem; margin:0; font-size:.8rem}
+.lot dt{color:var(--text-3); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; align-self:center}
+.lot dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:.8rem}
+
+/* calendario */
+.cal{display:grid; grid-template-columns:repeat(7,1fr); gap:.6rem}
+@media(max-width:760px){.cal{grid-template-columns:repeat(2,1fr)}}
+.day{padding:.9rem .8rem; border:1px solid var(--line); border-radius:12px; background:var(--surface);
+  display:flex; flex-direction:column; gap:.45rem; min-height:120px}
+.day.on{border-color:color-mix(in srgb,var(--gold) 55%,transparent); background:var(--gold-soft)}
+.day .dname{font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-3)}
+.day.on .dname{color:var(--gold-ink)}
+.day ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.25rem}
+.day li{font-size:.76rem; color:var(--text-2)}
+.day.on li{color:var(--gold-ink)}
+.day .kino{font-weight:700}
+
+/* prosa / faq */
+.prose-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.4rem}
+.prose{font-family:"Source Serif 4",Georgia,serif; font-size:.97rem; line-height:1.62; color:var(--text-2); max-width:65ch}
+.prose h3{font-family:"Archivo",sans-serif; font-size:.98rem; margin-bottom:.4rem; color:var(--text)}
+details{border-bottom:1px solid var(--line-soft); padding:.85rem 0}
+summary{cursor:pointer; font-weight:600; font-size:.93rem; list-style:none; display:flex; justify-content:space-between; gap:1rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+"; color:var(--gold); font-family:"IBM Plex Mono",monospace}
+details[open] summary::after{content:"–"}
+details p{margin-top:.55rem; font-family:"Source Serif 4",Georgia,serif; color:var(--text-2); font-size:.92rem; line-height:1.6; max-width:70ch}
+
+/* footer */
+footer{border-top:1px solid var(--line); padding:2.2rem 0 3rem; background:var(--surface)}
+.foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:1.5rem}
+@media(max-width:760px){.foot-grid{grid-template-columns:1fr}}
+footer p,footer li{font-size:.82rem; color:var(--text-2); line-height:1.55}
+footer ul{list-style:none; margin:.5rem 0 0; padding:0; display:flex; flex-direction:column; gap:.35rem}
+.r18{display:inline-flex; align-items:center; gap:.5rem; border:1px solid var(--rojo); color:var(--rojo);
+  border-radius:999px; padding:.25rem .7rem; font-size:.72rem; font-weight:700; margin-bottom:.6rem}
+
+/* ---------- panel admin ---------- */
+.modal{position:fixed; inset:0; z-index:80; display:none; place-items:center; padding:1.2rem;
+  background:color-mix(in srgb,#080a12 72%, transparent); backdrop-filter:blur(4px)}
+.modal.open{display:grid}
+.panel{width:min(720px,100%); max-height:88vh; overflow-y:auto; background:var(--surface);
+  border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:1.5rem}
+.panel h2{font-size:1.15rem}
+.panel-head{display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:1rem}
+.field{display:flex; flex-direction:column; gap:.3rem; margin-bottom:.9rem}
+.field label{font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-3)}
+input,select,textarea{
+  font:inherit; font-family:"IBM Plex Mono",monospace; font-size:.88rem;
+  background:var(--surface-2); color:var(--text); border:1px solid var(--line);
+  border-radius:9px; padding:.55rem .7rem; width:100%;
+}
+textarea{min-height:90px; resize:vertical}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:.9rem}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+.numpad{display:grid; grid-template-columns:repeat(auto-fill,minmax(46px,1fr)); gap:.4rem; margin-top:.2rem}
+.np{
+  font-family:"IBM Plex Mono",monospace; font-size:.85rem; padding:.5rem 0; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface-2); color:var(--text-2); border-radius:9px;
+}
+.np[aria-pressed="true"]{background:var(--ball-bg); color:var(--ball-text); border-color:var(--ball-line); font-weight:600}
+.np:disabled{opacity:.35; cursor:not-allowed}
+.notice{border-radius:10px; padding:.7rem .85rem; font-size:.83rem; margin-bottom:1rem; line-height:1.45}
+.notice.ok{background:color-mix(in srgb,var(--mint) 12%,transparent); color:var(--mint);
+  border:1px solid color-mix(in srgb,var(--mint) 40%,transparent)}
+.notice.warn{background:color-mix(in srgb,var(--rojo) 10%,transparent); color:var(--rojo);
+  border:1px solid color-mix(in srgb,var(--rojo) 35%,transparent)}
+.panel-actions{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; padding-top:1rem; border-top:1px solid var(--line-soft)}
+.hint{font-size:.76rem; color:var(--text-3); line-height:1.5}
+.pending{
+  display:flex; gap:.8rem; align-items:center; flex-wrap:wrap;
+  margin-top:1.2rem; padding:.75rem 1rem; border-radius:11px; font-size:.86rem;
+  border:1px solid color-mix(in srgb,var(--rojo) 40%,transparent);
+  background:color-mix(in srgb,var(--rojo) 9%,transparent); color:var(--rojo);
+}
+.pending strong{font-weight:700}
+.pending button{margin-left:auto}
+.demo-tag{
+  position:fixed; left:1rem; bottom:1rem; z-index:30; font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem; letter-spacing:.06em; color:var(--text-3); background:var(--surface);
+  border:1px solid var(--line); border-radius:999px; padding:.35rem .7rem;
+}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand"><span class="dot">14</span> Kino <span style="color:var(--gold)">del&nbsp;Sur</span></div>
+    <nav class="main">
+      <a href="#resultado">Resultado</a>
+      <a href="#historial">Historial</a>
+      <a href="#estadisticas">Estadísticas</a>
+      <a href="#loterias">Otras loterías</a>
+      <a href="#calendario">Calendario</a>
+    </nav>
+    <div class="top-actions">
+      <button class="btn ghost" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
+      <button class="btn" id="openPanel">Panel</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="pending" id="pendingBar" hidden>
+    <span id="pendingText"></span>
+    <button class="btn" id="pendingOpen">Abrir panel</button>
+  </div>
+
+  <!-- ================= RESULTADO ================= -->
+  <div class="hero" id="resultado">
+    <article class="card board">
+      <div class="board-head">
+        <div>
+          <span class="eyebrow">Resultado oficial · Kino</span>
+          <h1 id="tituloSorteo">Sorteo del 20 de agosto</h1>
+          <p class="fecha" id="sorteoFecha">domingo 17 de agosto de 2025</p>
+        </div>
+        <span class="badge" id="pubBadge"><span class="pulse"></span> Publicado 23:04</span>
+      </div>
+
+      <div class="balls" id="balls" aria-label="Números sorteados"></div>
+
+      <div class="board-foot">
+        <div class="stat"><span class="eyebrow">Multiplicador</span><span class="v" id="multi">×2</span></div>
+        <div class="stat"><span class="eyebrow">Comodín</span><span class="v" id="comodin">07</span></div>
+        <div class="stat"><span class="eyebrow">Pares / impares</span><span class="v" id="parImpar">7 / 7</span></div>
+        <div class="stat"><span class="eyebrow">Suma de los 14</span><span class="v" id="suma">182</span></div>
+      </div>
+    </article>
+
+    <aside class="rail">
+      <div class="pozo">
+        <span class="eyebrow">Próximo sorteo</span>
+        <div class="amount" id="proxTexto">Jueves 20</div>
+        <p style="font-size:.82rem;color:var(--text-2)">23:00 h de Chile continental. El resultado se publica aquí apenas se confirma.</p>
+        <div class="countdown" id="cd">
+          <div class="cd-unit"><b id="cdD">00</b><span>días</span></div>
+          <div class="cd-unit"><b id="cdH">00</b><span>hrs</span></div>
+          <div class="cd-unit"><b id="cdM">00</b><span>min</span></div>
+          <div class="cd-unit"><b id="cdS">00</b><span>seg</span></div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:1.3rem 1.4rem">
+        <span class="eyebrow">Últimos sorteos</span>
+        <ul class="mini-list" id="ultimos"></ul>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ================= HISTORIAL ================= -->
+  <section id="historial">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Archivo</span>
+        <h2>Historial de resultados</h2>
+      </div>
+      <p>Todos los sorteos publicados, del más reciente al más antiguo.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="num">Sorteo</th>
+            <th>Fecha</th>
+            <th>Números</th>
+            <th class="num">Multi.</th>
+            <th class="num">Suma</th>
+          </tr>
+        </thead>
+        <tbody id="histBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= ESTADÍSTICAS ================= -->
+  <section id="estadisticas">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Análisis</span>
+        <h2>Estadísticas de los números</h2>
+      </div>
+      <p>Frecuencia calculada sobre los sorteos publicados en este sitio. El Kino es un juego de azar: los sorteos anteriores no influyen en los próximos.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="card freq">
+        <span class="eyebrow">Frecuencia por número (01 – 25)</span>
+        <div id="freq" style="margin-top:.7rem"></div>
+      </div>
+      <div class="kpis">
+        <div class="card kpi">
+          <span class="eyebrow">Sorteos analizados</span>
+          <div class="v" id="kpiSorteos">0</div>
+          <p class="d">Base de cálculo de todas las estadísticas de esta sección.</p>
+        </div>
+        <div class="card kpi">
+          <span class="eyebrow">Más frecuentes</span>
+          <div class="chips" id="hot"></div>
+          <p class="d">Números con más apariciones en el período.</p>
+        </div>
+        <div class="card kpi">
+          <span class="eyebrow">Menos frecuentes</span>
+          <div class="chips" id="cold"></div>
+          <p class="d">Números con menos apariciones en el período.</p>
+        </div>
+        <div class="card kpi">
+          <span class="eyebrow">Pares / impares (promedio)</span>
+          <div class="v" id="kpiPar">—</div>
+          <p class="d">Distribución media por sorteo sobre los 14 números.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OTRAS LOTERÍAS ================= -->
+  <section id="loterias">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Panorama nacional</span>
+        <h2>Otras loterías de Chile</h2>
+      </div>
+      <p>Ficha informativa de los principales juegos de Polla Chilena de Beneficencia y de Lotería de Concepción. Días y montos son referenciales: confirme siempre en el sitio del operador.</p>
+    </div>
+    <div class="lot-grid" id="lotGrid"></div>
+  </section>
+
+  <!-- ================= CALENDARIO ================= -->
+  <section id="calendario">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Semana tipo</span>
+        <h2>Calendario de sorteos</h2>
+      </div>
+      <p>El resultado del Kino se publica en este sitio a partir de las 23:00 h, de domingo a viernes.</p>
+    </div>
+    <div class="cal" id="cal"></div>
+  </section>
+
+  <!-- ================= CÓMO SE JUEGA + FAQ ================= -->
+  <section id="ayuda">
+    <div class="prose-grid">
+      <div>
+        <span class="eyebrow">Cómo se juega</span>
+        <h2 style="margin:.35rem 0 .8rem; font-size:1.3rem">El Kino en tres pasos</h2>
+        <div class="prose">
+          <h3>1. Elige 14 números</h3>
+          <p>Cada cartón del Kino se juega con 14 números distintos del <strong>01 al 25</strong>. Puedes marcarlos tú o pedir una selección al azar en el punto de venta.</p>
+          <h3>2. Espera el sorteo</h3>
+          <p>En cada sorteo se extraen 14 números. Hay premio a partir de <strong>10 aciertos</strong> y hasta los 14, según las categorías vigentes del juego.</p>
+          <h3>3. Revisa y cobra</h3>
+          <p>Los premios menores se pagan en la red de agentes; los mayores, en las oficinas del operador, presentando el cartón y tu cédula de identidad. Los cartones tienen un plazo de cobro definido en las bases del juego.</p>
+          <h3>Sobre los montos</h3>
+          <p>Este sitio publica los números sorteados, no los valores de los premios. Consulta el monto que corresponde a tu cartón directamente con el operador del juego.</p>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow">Preguntas frecuentes</span>
+        <h2 style="margin:.35rem 0 .8rem; font-size:1.3rem">Dudas habituales</h2>
+        <details open><summary>¿A qué hora se publica el resultado?</summary>
+          <p>Cargamos el resultado de cada sorteo a partir de las 23:00 h de Chile continental, de domingo a viernes. Mientras no esté cargado, la tarjeta principal muestra el estado “A la espera del sorteo”.</p></details>
+        <details><summary>¿Este sitio es oficial?</summary>
+          <p>No. Es un sitio informativo independiente. El resultado válido para el cobro de premios es siempre el que publica el operador del juego y el acta del sorteo correspondiente.</p></details>
+        <details><summary>¿Publican los montos de los premios?</summary>
+          <p>No. Aquí encontrarás los 14 números sorteados, la fecha y el número de sorteo. Los premios van desde los 10 hasta los 14 aciertos, pero los montos de cada categoría los informa el operador del juego, que es la fuente válida para el cobro.</p></details>
+        <details><summary>¿Qué es el multiplicador?</summary>
+          <p>Es un factor adicional que se sortea junto con los números y que puede aumentar el valor de algunas categorías de premio, según las bases vigentes del juego.</p></details>
+        <details><summary>¿Sirven las estadísticas para elegir números?</summary>
+          <p>No. Cada sorteo es independiente y todos los números tienen la misma probabilidad de salir. Las estadísticas son un dato de interés, no una predicción.</p></details>
+        <details><summary>¿Quién puede jugar?</summary>
+          <p>Solo mayores de 18 años. Si el juego deja de ser entretención, busca ayuda: juega con límites de tiempo y de dinero.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <span class="r18">+18 · Juega con responsabilidad</span>
+      <p><strong>Kino del Sur</strong> es un sitio informativo independiente sobre resultados de loterías chilenas. No vende cartones, no recibe apuestas y no está afiliado a Polla Chilena de Beneficencia ni a Lotería de Concepción.</p>
+      <p style="margin-top:.6rem">Los resultados se cargan manualmente y pueden contener errores de digitación. El documento válido es el acta oficial del sorteo.</p>
+    </div>
+    <div>
+      <span class="eyebrow">Secciones</span>
+      <ul>
+        <li><a href="#resultado">Último resultado</a></li>
+        <li><a href="#historial">Historial de sorteos</a></li>
+        <li><a href="#estadisticas">Estadísticas</a></li>
+        <li><a href="#loterias">Otras loterías</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="eyebrow">Juego responsable</span>
+      <ul>
+        <li>Prohibida la venta a menores de 18 años.</li>
+        <li>Define un presupuesto antes de jugar.</li>
+        <li>El juego no es una fuente de ingresos.</li>
+        <li>Si necesitas orientación, consulta a Salud Responde: 600 360 7777.</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= PANEL DE CARGA ================= -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="panelTitle">
+  <div class="panel">
+    <div class="panel-head">
+      <div>
+        <span class="eyebrow">Panel de carga</span>
+        <h2 id="panelTitle">Publicar resultado del Kino</h2>
+      </div>
+      <button class="btn ghost" id="closePanel" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div id="loginStep">
+      <p class="hint" style="margin-bottom:.9rem">Acceso restringido al operador del sitio. En la demo el PIN es <strong>2580</strong>.</p>
+      <div class="field"><label for="pin">PIN de acceso</label><input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="••••"></div>
+      <div class="panel-actions"><button class="btn primary" id="doLogin">Entrar</button></div>
+    </div>
+
+    <form id="formStep" hidden>
+      <div class="notice" id="windowNotice"></div>
+
+      <div class="grid2">
+        <div class="field"><label for="fNum">N.º de sorteo</label><input id="fNum" type="number" min="1" required></div>
+        <div class="field"><label for="fFecha">Fecha del sorteo</label><input id="fFecha" type="date" required></div>
+      </div>
+
+      <div class="field">
+        <label>Números sorteados — <span id="selCount">0</span>/14</label>
+        <div class="numpad" id="numpad"></div>
+      </div>
+
+      <div class="grid2">
+        <div class="field"><label for="fMulti">Multiplicador</label>
+          <select id="fMulti"><option>×1</option><option selected>×2</option><option>×3</option><option>×5</option><option>×10</option></select>
+        </div>
+        <div class="field"><label for="fComodin">Comodín</label><input id="fComodin" type="number" min="1" max="25" placeholder="07"></div>
+      </div>
+
+      <div class="field">
+        <label for="fNota">Nota interna (opcional, no se publica)</label>
+        <input id="fNota" type="text" placeholder="Ej.: revisado con el acta oficial">
+      </div>
+
+      <div class="panel-actions">
+        <button class="btn primary" type="submit" id="publicar">Generar resultado</button>
+        <button class="btn" type="button" id="verJson">Ver JSON actual</button>
+        <button class="btn ghost" type="button" id="borrar">Borrar último</button>
+      </div>
+
+      <div class="field" id="jsonBox" hidden style="margin-top:1rem">
+        <label for="jsonOut">Contenido completo de resultados.json</label>
+        <textarea id="jsonOut" readonly spellcheck="false" style="min-height:150px"></textarea>
+        <div class="panel-actions" style="border:0; padding-top:.6rem; margin-top:0">
+          <button class="btn primary" type="button" id="copiarJson">Copiar todo</button>
+          <button class="btn ghost" type="button" id="yaPublique">Ya lo pegué en el sitio</button>
+        </div>
+        <p class="hint">Copia este texto y pégalo completo en el archivo <strong>resultados.json</strong>, reemplazando lo que había. En cuanto guardes, el sitio muestra el resultado a todo el mundo.</p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="demo-tag">Último resultado cargado a mano · el historial anterior es de ejemplo</div>
+
+
+<script>
+(function(){
+  "use strict";
+  var DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var NUM = new Intl.NumberFormat('es-CL');
+  var pad = function(n){ return String(n).padStart(2,'0'); };
+  var cap = function(s){ return s.charAt(0).toUpperCase()+s.slice(1); };
+
+  function parseISO(s){ var p = s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+  function isoOf(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function fechaLarga(s){
+    var d = parseISO(s);
+    return DIAS[d.getDay()]+' '+d.getDate()+' de '+
+      new Intl.DateTimeFormat('es-CL',{month:'long'}).format(d)+' de '+d.getFullYear();
+  }
+  /* Reloj de Chile continental: fecha con campos locales = hora de Santiago */
+  function ahoraCL(){
+    return new Date(new Date().toLocaleString('en-US',{timeZone:'America/Santiago'}));
+  }
+  function suma(nums){ return nums.reduce(function(a,b){ return a+b; }, 0); }
+  function pares(nums){ return nums.filter(function(n){ return n%2===0; }).length; }
+
+  /* ---------- datos de demostración ---------- */
+  var seed = 20260820;
+  function rnd(){ seed = (seed*1103515245 + 12345) % 2147483648; return seed/2147483648; }
+  function sorteoNumeros(){
+    var pool = [], i;
+    for(i=1;i<=25;i++) pool.push(i);
+    for(i=pool.length-1;i>0;i--){ var j = Math.floor(rnd()*(i+1)); var t=pool[i]; pool[i]=pool[j]; pool[j]=t; }
+    return pool.slice(0,14).sort(function(a,b){return a-b;});
+  }
+  function semilla(){
+    var out = [], d = new Date(2026,7,19), num = 2856, k;   /* 19 ago 2026 */
+    for(k=0;k<14;k++){
+      while(d.getDay()===6){ d.setDate(d.getDate()-1); }     /* sin sorteo los sábados */
+      out.push({
+        numero: num, fecha: isoOf(d), nums: sorteoNumeros(),
+        multi: ['×1','×2','×2','×3','×5'][Math.floor(rnd()*5)],
+        comodin: 1+Math.floor(rnd()*25),
+        publicado: '23:0'+Math.floor(rnd()*9)
+      });
+      num--; d.setDate(d.getDate()-1);
+    }
+    return out;
+  }
+
+  /* Respaldo: se usa sólo si resultados.json todavía no está disponible. */
+  var RESPALDO = [
+    { numero:null, fecha:'2026-08-20',
+      nums:[3,4,5,7,10,11,12,13,15,18,19,20,23,25],
+      multi:null, comodin:null, publicado:null }
+  ];
+
+  var KEY = 'kinodelsur.pendientes.v1';
+  var hist = [];        /* lo que se muestra en pantalla */
+  var remotos = [];     /* lo que ya está en resultados.json */
+  var pendientes = [];  /* cargado en el panel, aún sin pegar en el sitio */
+  var esRespaldo = false;
+
+  try { pendientes = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ pendientes = []; }
+  function guardar(){ try{ localStorage.setItem(KEY, JSON.stringify(pendientes)); }catch(e){} }
+
+  function armar(){
+    hist = pendientes.concat(remotos);
+    var bar = document.getElementById('pendingBar');
+    if(pendientes.length){
+      bar.hidden = false;
+      document.getElementById('pendingText').innerHTML = '<strong>Falta publicar:</strong> tienes ' +
+        pendientes.length + ' resultado' + (pendientes.length>1?'s':'') +
+        ' cargado' + (pendientes.length>1?'s':'') + ' que sólo ves tú. Copia el JSON y pégalo en resultados.json.';
+    } else bar.hidden = true;
+    document.querySelector('.demo-tag').hidden = !esRespaldo;
+  }
+
+  /* ---------- resultado principal ---------- */
+  function renderResultado(){
+    var s = hist[0];
+    var titulo = document.getElementById('tituloSorteo');
+    if(s.numero) titulo.innerHTML = 'Sorteo N.º <span class="mono">'+NUM.format(s.numero)+'</span>';
+    else {
+      var d = parseISO(s.fecha);
+      titulo.textContent = 'Sorteo del '+d.getDate()+' de '+
+        new Intl.DateTimeFormat('es-CL',{month:'long'}).format(d);
+    }
+    document.getElementById('sorteoFecha').textContent = fechaLarga(s.fecha);
+    document.getElementById('multi').textContent = s.multi || '—';
+    document.getElementById('comodin').textContent = s.comodin ? pad(s.comodin) : '—';
+    var p = pares(s.nums);
+    document.getElementById('parImpar').textContent = p+' / '+(14-p);
+    document.getElementById('suma').textContent = suma(s.nums);
+
+    var cont = document.getElementById('balls');
+    cont.innerHTML = '';
+    s.nums.forEach(function(n,i){
+      var b = document.createElement('div');
+      b.className = 'ball'; b.textContent = pad(n);
+      b.style.animationDelay = (i*45)+'ms';
+      cont.appendChild(b);
+    });
+
+    var hoy = isoOf(ahoraCL());
+    var badge = document.getElementById('pubBadge');
+    if(s.fecha === hoy){
+      badge.className = 'badge';
+      badge.innerHTML = '<span class="pulse"></span> ' +
+        (s.publicado ? 'Publicado '+s.publicado+' h' : 'Resultado de hoy');
+    } else {
+      badge.className = 'badge wait';
+      badge.textContent = 'Resultado del último sorteo';
+    }
+
+    var ul = document.getElementById('ultimos');
+    ul.innerHTML = '';
+    hist.slice(1,6).forEach(function(x){
+      var li = document.createElement('li');
+      li.innerHTML = '<span><strong class="mono">'+(x.numero || '—')+'</strong> · '+
+        DIAS[parseISO(x.fecha).getDay()].slice(0,3)+' '+parseISO(x.fecha).getDate()+'</span>'+
+        '<span class="nums">'+x.nums.slice(0,6).map(pad).join(' ')+'…</span>';
+      ul.appendChild(li);
+    });
+
+    var tb = document.getElementById('histBody');
+    tb.innerHTML = '';
+    hist.forEach(function(x){
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td class="num">'+(x.numero || '—')+'</td><td>'+fechaLarga(x.fecha)+'</td>'+
+        '<td class="mono" style="font-size:.8rem">'+x.nums.map(pad).join(' ')+'</td>'+
+        '<td class="num">'+(x.multi || '—')+'</td><td class="num">'+suma(x.nums)+'</td>';
+      tb.appendChild(tr);
+    });
+  }
+
+  /* ---------- estadísticas ---------- */
+  function renderStats(){
+    var f = new Array(26).fill(0), totPares = 0, i;
+    hist.forEach(function(s){
+      s.nums.forEach(function(n){ f[n]++; });
+      totPares += pares(s.nums);
+    });
+    var max = Math.max.apply(null, f.slice(1));
+    var box = document.getElementById('freq');
+    box.innerHTML = '';
+    for(i=1;i<=25;i++){
+      var row = document.createElement('div');
+      row.className = 'freq-row';
+      row.innerHTML = '<b>'+pad(i)+'</b><div class="bar"><i style="width:'+
+        Math.round(f[i]/max*100)+'%"></i></div><span>'+f[i]+'</span>';
+      box.appendChild(row);
+    }
+    var orden = [];
+    for(i=1;i<=25;i++) orden.push({n:i,c:f[i]});
+    orden.sort(function(a,b){ return b.c-a.c || a.n-b.n; });
+    var pinta = function(id, arr, cls){
+      var el = document.getElementById(id); el.innerHTML = '';
+      arr.forEach(function(o){
+        var c = document.createElement('span');
+        c.className = 'chip '+cls; c.textContent = pad(o.n)+' · '+o.c+'×';
+        el.appendChild(c);
+      });
+    };
+    pinta('hot', orden.slice(0,5), 'hot');
+    pinta('cold', orden.slice(-5).reverse(), 'cold');
+    document.getElementById('kpiSorteos').textContent = hist.length;
+    var mp = totPares/hist.length;
+    document.getElementById('kpiPar').textContent = mp.toFixed(1)+' / '+(14-mp).toFixed(1);
+  }
+
+  /* ---------- otras loterías de Chile ---------- */
+  var LOTERIAS = [
+    { sig:'LOT', nombre:'Loto', op:'Lotería de Concepción', formato:'6 de 41', dias:'Mar · Jue · Dom',
+      desc:'El clásico de la lotería chilena. Se eligen 6 números del 1 al 41 y el pozo acumula cuando no hay ganador.' },
+    { sig:'REV', nombre:'Revancha y Desquite', op:'Lotería de Concepción', formato:'6 de 41', dias:'Junto al Loto',
+      desc:'Sorteos adicionales que se juegan con el mismo cartón del Loto y ofrecen nuevas oportunidades sobre la misma jugada.' },
+    { sig:'JUB', nombre:'Jubilazo', op:'Lotería de Concepción', formato:'Renta mensual', dias:'Junto al Loto',
+      desc:'En vez de un premio único, entrega una renta mensual durante varios años. Se agrega al cartón del Loto.' },
+    { sig:'L3', nombre:'Loto 3', op:'Lotería de Concepción', formato:'3 cifras (000–999)', dias:'Sorteos diarios',
+      desc:'Juego de cifras: se apuesta a un número de tres dígitos y se puede jugar al orden exacto o a cualquier orden.' },
+    { sig:'L4', nombre:'Loto 4', op:'Lotería de Concepción', formato:'4 cifras (0000–9999)', dias:'Sorteos diarios',
+      desc:'La versión de cuatro dígitos, con premio mayor más alto y las mismas modalidades de apuesta que el Loto 3.' },
+    { sig:'KIN', nombre:'Kino', op:'Polla Chilena de Beneficencia', formato:'14 de 25', dias:'Ver calendario',
+      desc:'El juego que sigue este sitio: 14 números del 01 al 25, con premio desde los 10 aciertos hasta los 14.' },
+    { sig:'XPE', nombre:'Xperto', op:'Polla Chilena de Beneficencia', formato:'Números a elección', dias:'Sorteos frecuentes',
+      desc:'Permite decidir cuántos números jugar; a mayor cantidad de aciertos exigidos, mayor es el premio potencial.' },
+    { sig:'RAC', nombre:'Racha', op:'Polla Chilena de Beneficencia', formato:'Números + premio instantáneo', dias:'Consultar operador',
+      desc:'Juego de resultado rápido, pensado para quienes prefieren saber de inmediato si su cartón resultó premiado.' },
+    { sig:'IMA', nombre:'Imán', op:'Polla Chilena de Beneficencia', formato:'Cartón de números', dias:'Consultar operador',
+      desc:'Alternativa de bajo costo por cartón, con una estructura de premios más simple que la del Kino.' },
+    { sig:'GOL', nombre:'Polla Gol', op:'Polla Chilena de Beneficencia', formato:'Pronósticos deportivos', dias:'Fin de semana',
+      desc:'Se pronostica el resultado de una lista de partidos de fútbol. El premio mayor va para quien acierta la cartilla completa.' },
+    { sig:'TO3', nombre:'Toto 3', op:'Polla Chilena de Beneficencia', formato:'3 cifras', dias:'Sorteos diarios',
+      desc:'Juego de cifras de Polla: se apuesta a tres dígitos, con distintas modalidades y montos de apuesta.' },
+    { sig:'RAS', nombre:'Raspes', op:'Ambos operadores', formato:'Boleto instantáneo', dias:'Venta permanente',
+      desc:'Boletos de raspar con premio inmediato. Cada emisión tiene su propia tabla de premios y probabilidades.' }
+  ];
+  function renderLoterias(){
+    var g = document.getElementById('lotGrid');
+    g.innerHTML = '';
+    LOTERIAS.forEach(function(l){
+      var el = document.createElement('article');
+      el.className = 'card lot';
+      el.innerHTML =
+        '<div class="lot-top"><span class="lot-mark">'+l.sig+'</span>'+
+        '<div><h3>'+l.nombre+'</h3><span class="op">'+l.op+'</span></div></div>'+
+        '<p class="desc">'+l.desc+'</p>'+
+        '<dl><dt>Formato</dt><dd>'+l.formato+'</dd><dt>Sorteos</dt><dd>'+l.dias+'</dd></dl>';
+      g.appendChild(el);
+    });
+  }
+
+  /* ---------- calendario semanal ---------- */
+  var AGENDA = [
+    { d:'Domingo', kino:true,  otros:['Loto · Revancha · Desquite','Loto 3 · Loto 4'] },
+    { d:'Lunes',   kino:true,  otros:['Loto 3 · Loto 4','Toto 3'] },
+    { d:'Martes',  kino:true,  otros:['Loto · Revancha · Desquite','Loto 3 · Loto 4'] },
+    { d:'Miércoles', kino:true, otros:['Loto 3 · Loto 4','Toto 3'] },
+    { d:'Jueves',  kino:true,  otros:['Loto · Revancha · Desquite','Loto 3 · Loto 4'] },
+    { d:'Viernes', kino:true,  otros:['Loto 3 · Loto 4','Polla Gol (cierre)'] },
+    { d:'Sábado',  kino:false, otros:['Loto 3 · Loto 4','Polla Gol'] }
+  ];
+  function renderCal(){
+    var hoy = ahoraCL().getDay();
+    var c = document.getElementById('cal');
+    c.innerHTML = '';
+    AGENDA.forEach(function(a,i){
+      var idx = (i+1)%7;                      /* domingo = 0 */
+      var el = document.createElement('div');
+      el.className = 'day' + (a.kino ? ' on' : '');
+      var li = a.otros.map(function(o){ return '<li>'+o+'</li>'; }).join('');
+      el.innerHTML = '<span class="dname">'+a.d+(idx===hoy?' · hoy':'')+'</span>'+
+        '<ul>'+(a.kino?'<li class="kino">Kino · 23:00 h</li>':'<li>Sin sorteo de Kino</li>')+li+'</ul>';
+      c.appendChild(el);
+    });
+  }
+
+  /* ---------- próximo sorteo + cuenta regresiva ---------- */
+  function proximoSorteo(){
+    var n = ahoraCL();
+    var t = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23, 0, 0);
+    if(n >= t) t.setDate(t.getDate()+1);
+    while(t.getDay()===6) t.setDate(t.getDate()+1);   /* sábado sin sorteo */
+    return t;
+  }
+  function tick(){
+    var t = proximoSorteo(), n = ahoraCL(), ms = Math.max(0, t-n);
+    var s = Math.floor(ms/1000);
+    document.getElementById('cdD').textContent = pad(Math.floor(s/86400));
+    document.getElementById('cdH').textContent = pad(Math.floor(s/3600)%24);
+    document.getElementById('cdM').textContent = pad(Math.floor(s/60)%60);
+    document.getElementById('cdS').textContent = pad(s%60);
+    document.getElementById('proxTexto').textContent = cap(DIAS[t.getDay()])+' '+t.getDate();
+  }
+
+  /* ---------- panel de carga ---------- */
+  var PIN_DEMO = '2580';
+  var modal = document.getElementById('modal');
+  var seleccion = [];
+
+  function ventanaAbierta(){
+    var n = ahoraCL();
+    return n.getDay() !== 6 && n.getHours() >= 23;
+  }
+  function pintarVentana(){
+    var n = ahoraCL(), el = document.getElementById('windowNotice');
+    var hora = pad(n.getHours())+':'+pad(n.getMinutes());
+    if(ventanaAbierta()){
+      el.className = 'notice ok';
+      el.textContent = 'Ventana de carga abierta · '+DIAS[n.getDay()]+' '+hora+' h de Chile. Ya puedes publicar el resultado de hoy.';
+    } else {
+      el.className = 'notice warn';
+      el.textContent = 'Fuera de la ventana habitual ('+DIAS[n.getDay()]+' '+hora+' h). La carga programada es de domingo a viernes desde las 23:00 h; puedes publicar igual para corregir un sorteo anterior.';
+    }
+  }
+  function construirNumpad(){
+    var np = document.getElementById('numpad');
+    np.innerHTML = '';
+    for(var i=1;i<=25;i++){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'np'; b.textContent = pad(i);
+      b.setAttribute('aria-pressed','false'); b.dataset.n = i;
+      np.appendChild(b);
+    }
+    np.addEventListener('click', function(ev){
+      var b = ev.target.closest('.np'); if(!b) return;
+      var n = +b.dataset.n, k = seleccion.indexOf(n);
+      if(k >= 0) seleccion.splice(k,1);
+      else if(seleccion.length < 14) seleccion.push(n);
+      pintarSeleccion();
+    });
+  }
+  function pintarSeleccion(){
+    document.getElementById('selCount').textContent = seleccion.length;
+    Array.prototype.forEach.call(document.querySelectorAll('.np'), function(b){
+      var on = seleccion.indexOf(+b.dataset.n) >= 0;
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.disabled = !on && seleccion.length >= 14;
+    });
+  }
+  function abrirPanel(){
+    modal.classList.add('open');
+    document.getElementById('pin').value = '';
+    document.getElementById('pin').focus();
+  }
+  function cerrarPanel(){ modal.classList.remove('open'); }
+
+  document.getElementById('openPanel').addEventListener('click', abrirPanel);
+  document.getElementById('closePanel').addEventListener('click', cerrarPanel);
+  modal.addEventListener('click', function(e){ if(e.target === modal) cerrarPanel(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') cerrarPanel(); });
+
+  document.getElementById('doLogin').addEventListener('click', function(){
+    var pin = document.getElementById('pin');
+    if(pin.value !== PIN_DEMO){
+      pin.value = '';
+      pin.placeholder = 'PIN incorrecto';
+      pin.style.borderColor = 'var(--rojo)';
+      return;
+    }
+    document.getElementById('loginStep').hidden = true;
+    document.getElementById('formStep').hidden = false;
+    pintarVentana();
+    construirNumpad();
+    seleccion = [];
+    pintarSeleccion();
+    document.getElementById('fNum').value = hist[0].numero ? hist[0].numero + 1 : '';
+    document.getElementById('fFecha').value = isoOf(ahoraCL());
+  });
+  document.getElementById('pin').addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); document.getElementById('doLogin').click(); }
+  });
+
+  document.getElementById('formStep').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(seleccion.length !== 14){ alert('Debes marcar exactamente 14 números.'); return; }
+    var n = ahoraCL();
+    var nuevo = {
+      numero: +document.getElementById('fNum').value || null,
+      fecha: document.getElementById('fFecha').value,
+      nums: seleccion.slice().sort(function(a,b){return a-b;}),
+      multi: document.getElementById('fMulti').value,
+      comodin: +document.getElementById('fComodin').value || seleccion[0],
+      publicado: pad(n.getHours())+':'+pad(n.getMinutes())
+    };
+    pendientes.unshift(nuevo);
+    guardar();
+    pintarTodo();
+    mostrarJson();
+    document.getElementById('jsonOut').focus();
+  });
+
+  function mostrarJson(){
+    var box = document.getElementById('jsonBox');
+    box.hidden = false;
+    var txt = function(v){ return v ? '"'+v+'"' : 'null'; };
+    document.getElementById('jsonOut').value = '[\n' +
+      pendientes.concat(remotos).map(function(x){
+        return '  {\n' +
+          '    "numero": '    + (x.numero || 'null') + ',\n' +
+          '    "fecha": "'    + x.fecha + '",\n' +
+          '    "nums": ['     + x.nums.join(', ') + '],\n' +
+          '    "multi": '     + txt(x.multi) + ',\n' +
+          '    "comodin": '   + (x.comodin || 'null') + ',\n' +
+          '    "publicado": ' + txt(x.publicado) + '\n' +
+          '  }';
+      }).join(',\n') + '\n]\n';
+  }
+
+  document.getElementById('verJson').addEventListener('click', function(){
+    var box = document.getElementById('jsonBox');
+    if(box.hidden) mostrarJson(); else box.hidden = true;
+  });
+
+  document.getElementById('copiarJson').addEventListener('click', function(){
+    var out = document.getElementById('jsonOut'), btn = this;
+    var listo = function(){ btn.textContent = 'Copiado ✓'; setTimeout(function(){ btn.textContent = 'Copiar todo'; }, 2000); };
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(out.value).then(listo, function(){ out.select(); });
+    } else { out.select(); document.execCommand('copy'); listo(); }
+  });
+
+  document.getElementById('yaPublique').addEventListener('click', function(){
+    if(!pendientes.length){ cerrarPanel(); return; }
+    if(!confirm('¿Ya pegaste el JSON en resultados.json y guardaste el cambio?')) return;
+    remotos = pendientes.concat(remotos);
+    pendientes = [];
+    guardar();
+    pintarTodo();
+    cerrarPanel();
+  });
+
+  document.getElementById('borrar').addEventListener('click', function(){
+    if(!pendientes.length){ alert('Sólo se puede borrar un resultado que aún no fue publicado.'); return; }
+    if(!confirm('¿Descartar el último resultado cargado?')) return;
+    pendientes.shift(); guardar(); pintarTodo(); mostrarJson();
+  });
+
+  /* ---------- tema ---------- */
+  document.getElementById('themeBtn').addEventListener('click', function(){
+    var actual = document.documentElement.getAttribute('data-theme');
+    var oscuro = actual ? actual === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', oscuro ? 'light' : 'dark');
+  });
+
+  /* ---------- init ---------- */
+  function pintarTodo(){
+    armar();
+    renderResultado();
+    renderStats();
+  }
+  function arrancar(datos, respaldo){
+    remotos = datos;
+    esRespaldo = !!respaldo;
+    pintarTodo();
+  }
+  renderLoterias();
+  renderCal();
+  tick();
+  setInterval(tick, 1000);
+  document.getElementById('pendingOpen').addEventListener('click', abrirPanel);
+
+  fetch('resultados.json', {cache:'no-store'})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      if(j && j.length) arrancar(j, false);
+      else arrancar(RESPALDO.concat(semilla()), true);
+    })
+    .catch(function(){ arrancar(RESPALDO.concat(semilla()), true); });
+})();
+</script>
