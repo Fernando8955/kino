@@ -336,9 +336,8 @@ textarea{min-height:90px; resize:vertical}
       <div class="balls" id="balls" aria-label="Números sorteados"></div>
 
       <div class="board-foot">
-        <div class="stat"><span class="eyebrow">Multiplicador</span><span class="v" id="multi">×2</span></div>
-        <div class="stat"><span class="eyebrow">Comodín</span><span class="v" id="comodin">07</span></div>
         <div class="stat"><span class="eyebrow">Pares / impares</span><span class="v" id="parImpar">7 / 7</span></div>
+        <div class="stat"><span class="eyebrow">Bajos 01–13 / altos 14–25</span><span class="v" id="bajosAltos">7 / 7</span></div>
         <div class="stat"><span class="eyebrow">Suma de los 14</span><span class="v" id="suma">182</span></div>
       </div>
     </article>
@@ -379,7 +378,6 @@ textarea{min-height:90px; resize:vertical}
             <th class="num">Sorteo</th>
             <th>Fecha</th>
             <th>Números</th>
-            <th class="num">Multi.</th>
             <th class="num">Suma</th>
           </tr>
         </thead>
@@ -477,8 +475,6 @@ textarea{min-height:90px; resize:vertical}
           <p>No. Es un sitio informativo independiente. El resultado válido para el cobro de premios es siempre el que publica el operador del juego y el acta del sorteo correspondiente.</p></details>
         <details><summary>¿Publican los montos de los premios?</summary>
           <p>No. Aquí encontrarás los 14 números sorteados, la fecha y el número de sorteo. Los premios van desde los 10 hasta los 14 aciertos, pero los montos de cada categoría los informa el operador del juego, que es la fuente válida para el cobro.</p></details>
-        <details><summary>¿Qué es el multiplicador?</summary>
-          <p>Es un factor adicional que se sortea junto con los números y que puede aumentar el valor de algunas categorías de premio, según las bases vigentes del juego.</p></details>
         <details><summary>¿Sirven las estadísticas para elegir números?</summary>
           <p>No. Cada sorteo es independiente y todos los números tienen la misma probabilidad de salir. Las estadísticas son un dato de interés, no una predicción.</p></details>
         <details><summary>¿Quién puede jugar?</summary>
@@ -546,18 +542,6 @@ textarea{min-height:90px; resize:vertical}
         <div class="numpad" id="numpad"></div>
       </div>
 
-      <div class="grid2">
-        <div class="field"><label for="fMulti">Multiplicador</label>
-          <select id="fMulti"><option>×1</option><option selected>×2</option><option>×3</option><option>×5</option><option>×10</option></select>
-        </div>
-        <div class="field"><label for="fComodin">Comodín</label><input id="fComodin" type="number" min="1" max="25" placeholder="07"></div>
-      </div>
-
-      <div class="field">
-        <label for="fNota">Nota interna (opcional, no se publica)</label>
-        <input id="fNota" type="text" placeholder="Ej.: revisado con el acta oficial">
-      </div>
-
       <div class="panel-actions">
         <button class="btn primary" type="submit" id="publicar">Generar resultado</button>
         <button class="btn" type="button" id="verJson">Ver JSON actual</button>
@@ -617,8 +601,6 @@ textarea{min-height:90px; resize:vertical}
       while(d.getDay()===6){ d.setDate(d.getDate()-1); }     /* sin sorteo los sábados */
       out.push({
         numero: num, fecha: isoOf(d), nums: sorteoNumeros(),
-        multi: ['×1','×2','×2','×3','×5'][Math.floor(rnd()*5)],
-        comodin: 1+Math.floor(rnd()*25),
         publicado: '23:0'+Math.floor(rnd()*9)
       });
       num--; d.setDate(d.getDate()-1);
@@ -629,8 +611,7 @@ textarea{min-height:90px; resize:vertical}
   /* Respaldo: se usa sólo si resultados.json todavía no está disponible. */
   var RESPALDO = [
     { numero:null, fecha:'2026-08-20',
-      nums:[3,4,5,7,10,11,12,13,15,18,19,20,23,25],
-      multi:null, comodin:null, publicado:null }
+      nums:[3,4,5,7,10,11,12,13,15,18,19,20,23,25], publicado:null }
   ];
 
   var KEY = 'kinodelsur.pendientes.v1';
@@ -665,10 +646,10 @@ textarea{min-height:90px; resize:vertical}
         new Intl.DateTimeFormat('es-CL',{month:'long'}).format(d);
     }
     document.getElementById('sorteoFecha').textContent = fechaLarga(s.fecha);
-    document.getElementById('multi').textContent = s.multi || '—';
-    document.getElementById('comodin').textContent = s.comodin ? pad(s.comodin) : '—';
     var p = pares(s.nums);
     document.getElementById('parImpar').textContent = p+' / '+(14-p);
+    var bajos = s.nums.filter(function(n){ return n <= 13; }).length;
+    document.getElementById('bajosAltos').textContent = bajos+' / '+(14-bajos);
     document.getElementById('suma').textContent = suma(s.nums);
 
     var cont = document.getElementById('balls');
@@ -707,7 +688,7 @@ textarea{min-height:90px; resize:vertical}
       var tr = document.createElement('tr');
       tr.innerHTML = '<td class="num">'+(x.numero || '—')+'</td><td>'+fechaLarga(x.fecha)+'</td>'+
         '<td class="mono" style="font-size:.8rem">'+x.nums.map(pad).join(' ')+'</td>'+
-        '<td class="num">'+(x.multi || '—')+'</td><td class="num">'+suma(x.nums)+'</td>';
+        '<td class="num">'+suma(x.nums)+'</td>';
       tb.appendChild(tr);
     });
   }
@@ -918,8 +899,6 @@ textarea{min-height:90px; resize:vertical}
       numero: +document.getElementById('fNum').value || null,
       fecha: document.getElementById('fFecha').value,
       nums: seleccion.slice().sort(function(a,b){return a-b;}),
-      multi: document.getElementById('fMulti').value,
-      comodin: +document.getElementById('fComodin').value || seleccion[0],
       publicado: pad(n.getHours())+':'+pad(n.getMinutes())
     };
     pendientes.unshift(nuevo);
@@ -939,8 +918,6 @@ textarea{min-height:90px; resize:vertical}
           '    "numero": '    + (x.numero || 'null') + ',\n' +
           '    "fecha": "'    + x.fecha + '",\n' +
           '    "nums": ['     + x.nums.join(', ') + '],\n' +
-          '    "multi": '     + txt(x.multi) + ',\n' +
-          '    "comodin": '   + (x.comodin || 'null') + ',\n' +
           '    "publicado": ' + txt(x.publicado) + '\n' +
           '  }';
       }).join(',\n') + '\n]\n';
