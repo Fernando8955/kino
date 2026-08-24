@@ -121,8 +121,10 @@ nav.main a:hover,nav.main a:focus-visible{color:var(--text); border-bottom-color
 }
 .board-head{display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap}
 .board h1{font-size:clamp(1.5rem,3.4vw,2.1rem); font-weight:800; line-height:1.05}
-.board .fecha{color:var(--text-2); font-size:.92rem; margin-top:.35rem}
-.board .fecha::first-letter{text-transform:uppercase}
+.board .fecha{color:var(--text-3); font-size:.85rem; margin-top:.4rem;
+  font-family:"IBM Plex Mono",monospace; letter-spacing:.02em}
+.board h1::first-letter{text-transform:uppercase}
+td.sorteo{color:var(--text-3); font-size:.8rem}
 .badge{
   display:inline-flex; align-items:center; gap:.4rem; font-size:.7rem; font-weight:600;
   letter-spacing:.08em; text-transform:uppercase; padding:.3rem .6rem; border-radius:999px;
@@ -337,8 +339,8 @@ textarea{min-height:90px; resize:vertical}
       <div class="board-head">
         <div>
           <span class="eyebrow">Resultado oficial · Kino</span>
-          <h1 id="tituloSorteo">Sorteo del 20 de agosto</h1>
-          <p class="fecha" id="sorteoFecha">domingo 17 de agosto de 2025</p>
+          <h1 id="tituloSorteo">Jueves 20 de agosto de 2026</h1>
+          <p class="fecha" id="sorteoFecha">Sorteo N.º 3.268</p>
         </div>
         <span class="badge" id="pubBadge"><span class="pulse"></span> Publicado 23:04</span>
       </div>
@@ -385,8 +387,8 @@ textarea{min-height:90px; resize:vertical}
       <table>
         <thead>
           <tr>
-            <th class="num">Sorteo</th>
             <th>Fecha</th>
+            <th class="num">Sorteo</th>
             <th>Números</th>
             <th class="num">Suma</th>
           </tr>
@@ -639,14 +641,24 @@ textarea{min-height:90px; resize:vertical}
 
   var TOPE = 20;   /* el sitio muestra y guarda siempre los últimos 20 sorteos */
 
+  /* una sola entrada por fecha: gana la más reciente */
+  function unicos(arr){
+    var vistas = {}, out = [];
+    arr.forEach(function(x){
+      if(!vistas[x.fecha]){ vistas[x.fecha] = 1; out.push(x); }
+    });
+    return out;
+  }
+
   function armar(){
-    hist = pendientes.concat(remotos).slice(0, TOPE);
+    hist = unicos(pendientes.concat(remotos)).slice(0, TOPE);
     var bar = document.getElementById('pendingBar');
-    if(pendientes.length){
+    var n = unicos(pendientes).length;
+    if(n){
       bar.hidden = false;
       document.getElementById('pendingText').innerHTML = '<strong>Falta publicar:</strong> tienes ' +
-        pendientes.length + ' resultado' + (pendientes.length>1?'s':'') +
-        ' cargado' + (pendientes.length>1?'s':'') + ' que sólo ves tú. Copia el JSON y pégalo en resultados.json.';
+        n + ' resultado' + (n>1?'s':'') +
+        ' cargado' + (n>1?'s':'') + ' que sólo ves tú. Copia el JSON y pégalo en resultados.json.';
     } else bar.hidden = true;
     document.querySelector('.demo-tag').hidden = !esRespaldo;
   }
@@ -654,14 +666,9 @@ textarea{min-height:90px; resize:vertical}
   /* ---------- resultado principal ---------- */
   function renderResultado(){
     var s = hist[0];
-    var titulo = document.getElementById('tituloSorteo');
-    if(s.numero) titulo.innerHTML = 'Sorteo N.º <span class="mono">'+NUM.format(s.numero)+'</span>';
-    else {
-      var d = parseISO(s.fecha);
-      titulo.textContent = 'Sorteo del '+d.getDate()+' de '+
-        new Intl.DateTimeFormat('es-CL',{month:'long'}).format(d);
-    }
-    document.getElementById('sorteoFecha').textContent = fechaLarga(s.fecha);
+    document.getElementById('tituloSorteo').textContent = fechaLarga(s.fecha);
+    document.getElementById('sorteoFecha').textContent =
+      s.numero ? 'Sorteo N.º '+NUM.format(s.numero) : 'Sorteo sin número informado';
     var p = pares(s.nums);
     document.getElementById('parImpar').textContent = p+' / '+(14-p);
     var bajos = s.nums.filter(function(n){ return n <= 13; }).length;
@@ -692,8 +699,8 @@ textarea{min-height:90px; resize:vertical}
     ul.innerHTML = '';
     hist.slice(1,6).forEach(function(x){
       var li = document.createElement('li');
-      li.innerHTML = '<span><strong class="mono">'+(x.numero || '—')+'</strong> · '+
-        DIAS[parseISO(x.fecha).getDay()].slice(0,3)+' '+parseISO(x.fecha).getDate()+'</span>'+
+      li.innerHTML = '<span><strong>'+cap(DIAS[parseISO(x.fecha).getDay()].slice(0,3))+' '+
+        parseISO(x.fecha).getDate()+'</strong></span>'+
         '<span class="nums">'+x.nums.slice(0,6).map(pad).join(' ')+'…</span>';
       ul.appendChild(li);
     });
@@ -702,7 +709,7 @@ textarea{min-height:90px; resize:vertical}
     tb.innerHTML = '';
     hist.forEach(function(x){
       var tr = document.createElement('tr');
-      tr.innerHTML = '<td class="num">'+(x.numero || '—')+'</td><td>'+fechaLarga(x.fecha)+'</td>'+
+      tr.innerHTML = '<td>'+fechaLarga(x.fecha)+'</td><td class="num sorteo">'+(x.numero || '—')+'</td>'+
         '<td class="mono" style="font-size:.8rem">'+x.nums.map(pad).join(' ')+'</td>'+
         '<td class="num">'+suma(x.nums)+'</td>';
       tb.appendChild(tr);
@@ -917,7 +924,11 @@ textarea{min-height:90px; resize:vertical}
       nums: seleccion.slice().sort(function(a,b){return a-b;}),
       publicado: pad(n.getHours())+':'+pad(n.getMinutes())
     };
+    var repetida = pendientes.some(function(x){ return x.fecha === nuevo.fecha; }) ||
+                   remotos.some(function(x){ return x.fecha === nuevo.fecha; });
+    pendientes = pendientes.filter(function(x){ return x.fecha !== nuevo.fecha; });
     pendientes.unshift(nuevo);
+    if(repetida) alert('Ya había un resultado para esa fecha. Se reemplazó por el que acabas de cargar.');
     guardar();
     pintarTodo();
     mostrarJson();
@@ -929,7 +940,7 @@ textarea{min-height:90px; resize:vertical}
     box.hidden = false;
     var txt = function(v){ return v ? '"'+v+'"' : 'null'; };
     document.getElementById('jsonOut').value = '[\n' +
-      pendientes.concat(remotos).slice(0, TOPE).map(function(x){
+      unicos(pendientes.concat(remotos)).slice(0, TOPE).map(function(x){
         return '  {\n' +
           '    "numero": '    + (x.numero || 'null') + ',\n' +
           '    "fecha": "'    + x.fecha + '",\n' +
