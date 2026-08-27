@@ -170,6 +170,10 @@ td.sorteo{color:var(--text-3); font-size:.8rem}
 .mini-list li{display:flex; justify-content:space-between; align-items:center; gap:.6rem;
   padding:.55rem 0; border-top:1px solid var(--line-soft); font-size:.85rem}
 .mini-list .nums{font-family:"IBM Plex Mono",monospace; color:var(--text-2); font-size:.78rem}
+.mini-list .cuando{font-family:"IBM Plex Mono",monospace; color:var(--text-3); font-size:.78rem}
+.mini-list .cuando.hoy{color:var(--gold); font-weight:600}
+.mini-list .juego{font-weight:600; font-size:.86rem}
+.mini-list .nota{display:block; color:var(--text-3); font-size:.72rem; font-weight:400}
 
 /* ---------- secciones ---------- */
 section{padding:2.6rem 0; border-top:1px solid var(--line)}
@@ -368,8 +372,9 @@ textarea{min-height:90px; resize:vertical}
       </div>
 
       <div class="card" style="padding:1.3rem 1.4rem">
-        <span class="eyebrow">Últimos sorteos</span>
-        <ul class="mini-list" id="ultimos"></ul>
+        <span class="eyebrow">Otras loterías · próximo sorteo</span>
+        <ul class="mini-list" id="proximas"></ul>
+        <p class="hint" style="margin-top:.8rem">Días referenciales. Confirma siempre en el sitio del operador.</p>
       </div>
     </aside>
   </div>
@@ -695,16 +700,6 @@ textarea{min-height:90px; resize:vertical}
       badge.textContent = 'Resultado del último sorteo';
     }
 
-    var ul = document.getElementById('ultimos');
-    ul.innerHTML = '';
-    hist.slice(1,6).forEach(function(x){
-      var li = document.createElement('li');
-      li.innerHTML = '<span><strong>'+cap(DIAS[parseISO(x.fecha).getDay()].slice(0,3))+' '+
-        parseISO(x.fecha).getDate()+'</strong></span>'+
-        '<span class="nums">'+x.nums.slice(0,6).map(pad).join(' ')+'…</span>';
-      ul.appendChild(li);
-    });
-
     var tb = document.getElementById('histBody');
     tb.innerHTML = '';
     hist.forEach(function(x){
@@ -815,6 +810,34 @@ textarea{min-height:90px; resize:vertical}
       el.innerHTML = '<span class="dname">'+a.d+(idx===hoy?' · hoy':'')+'</span>'+
         '<ul>'+(a.kino?'<li class="kino">Kino · 23:00 h</li>':'<li>Sin sorteo de Kino</li>')+li+'</ul>';
       c.appendChild(el);
+    });
+  }
+
+  /* ---------- próximos sorteos de las otras loterías ---------- */
+  var OTRAS = [
+    { juego:'Loto',      nota:'con Revancha y Desquite', dias:[0,2,4] },
+    { juego:'Jubilazo',  nota:'junto al cartón del Loto', dias:[0,2,4] },
+    { juego:'Loto 3',    nota:'3 cifras',                 dias:[0,1,2,3,4,5,6] },
+    { juego:'Loto 4',    nota:'4 cifras',                 dias:[0,1,2,3,4,5,6] },
+    { juego:'Toto 3',    nota:'Polla · 3 cifras',         dias:[0,1,2,3,4,5,6] },
+    { juego:'Polla Gol', nota:'pronósticos de fútbol',    dias:[6] }
+  ];
+  function renderProximas(){
+    var hoy = ahoraCL().getDay();
+    var ul = document.getElementById('proximas');
+    ul.innerHTML = '';
+    OTRAS.forEach(function(o){
+      var cuando, i;
+      if(o.dias.indexOf(hoy) >= 0) cuando = 'Hoy';
+      else {
+        for(i = 1; i <= 7; i++){
+          if(o.dias.indexOf((hoy + i) % 7) >= 0){ cuando = cap(DIAS[(hoy + i) % 7]); break; }
+        }
+      }
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="juego">'+o.juego+'<span class="nota">'+o.nota+'</span></span>'+
+        '<span class="cuando'+(cuando === 'Hoy' ? ' hoy' : '')+'">'+cuando+'</span>';
+      ul.appendChild(li);
     });
   }
 
@@ -1000,6 +1023,7 @@ textarea{min-height:90px; resize:vertical}
   }
   renderLoterias();
   renderCal();
+  renderProximas();
   tick();
   setInterval(tick, 1000);
   document.getElementById('pendingOpen').addEventListener('click', abrirPanel);
