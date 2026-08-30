@@ -988,12 +988,39 @@ textarea{min-height:90px; resize:vertical}
 
   document.getElementById('yaPublique').addEventListener('click', function(){
     if(!pendientes.length){ cerrarPanel(); return; }
-    if(!confirm('¿Ya pegaste el JSON en resultados.json y guardaste el cambio?')) return;
-    remotos = pendientes.concat(remotos);
-    pendientes = [];
-    guardar();
-    pintarTodo();
-    cerrarPanel();
+    var btn = this, texto = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Verificando…';
+    var listo = function(){ btn.disabled = false; btn.textContent = texto; };
+
+    /* nunca se borra nada sin confirmar que el sitio ya lo tiene publicado */
+    fetch('resultados.json?v=' + Date.now(), {cache:'no-store'})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){
+        listo();
+        if(!j || !j.length){
+          alert('No pude leer resultados.json. Tu resultado sigue guardado aquí. Intenta de nuevo en un minuto.');
+          return;
+        }
+        var publicadas = {};
+        j.forEach(function(x){ publicadas[x.fecha] = 1; });
+        var faltan = pendientes.filter(function(x){ return !publicadas[x.fecha]; });
+        if(faltan.length){
+          alert('Todavía no veo publicado el sorteo del ' + faltan[0].fecha + '.\n\n' +
+                'Tu resultado NO se borró: sigue guardado aquí.\n\n' +
+                'Revisa que hayas pegado el JSON en resultados.json y guardado el cambio en GitHub. ' +
+                'Si lo acabas de guardar, espera un minuto y vuelve a intentar.');
+          return;
+        }
+        remotos = j;
+        pendientes = [];
+        guardar();
+        pintarTodo();
+        cerrarPanel();
+      })
+      .catch(function(){
+        listo();
+        alert('No pude verificar ahora. Tu resultado sigue guardado aquí. Revisa tu conexión e intenta de nuevo.');
+      });
   });
 
   document.getElementById('borrar').addEventListener('click', function(){
