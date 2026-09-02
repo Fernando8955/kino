@@ -941,11 +941,16 @@ textarea{min-height:90px; resize:vertical}
     e.preventDefault();
     if(seleccion.length !== 14){ alert('Debes marcar exactamente 14 números.'); return; }
     var n = ahoraCL();
+    var fechaSorteo = document.getElementById('fFecha').value;
+    /* la hora real de carga; si se cargó pasada la medianoche, queda como 23:50 */
+    var hora = (fechaSorteo < isoOf(n))
+      ? '23:50'
+      : pad(n.getHours())+':'+pad(n.getMinutes());
     var nuevo = {
       numero: +document.getElementById('fNum').value || null,
-      fecha: document.getElementById('fFecha').value,
+      fecha: fechaSorteo,
       nums: seleccion.slice().sort(function(a,b){return a-b;}),
-      publicado: pad(n.getHours())+':'+pad(n.getMinutes())
+      publicado: hora
     };
     var repetida = pendientes.some(function(x){ return x.fecha === nuevo.fecha; }) ||
                    remotos.some(function(x){ return x.fecha === nuevo.fecha; });
