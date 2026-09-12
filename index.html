@@ -461,7 +461,7 @@ textarea{min-height:90px; resize:vertical}
         <span class="eyebrow">Semana tipo</span>
         <h2>Calendario de sorteos</h2>
       </div>
-      <p>El resultado del Kino se publica en este sitio a partir de las 23:00 h, de domingo a viernes.</p>
+      <p>El resultado del Kino se publica en este sitio todos los días a partir de las 23:00 h.</p>
     </div>
     <div class="cal" id="cal"></div>
   </section>
@@ -487,7 +487,7 @@ textarea{min-height:90px; resize:vertical}
         <span class="eyebrow">Preguntas frecuentes</span>
         <h2 style="margin:.35rem 0 .8rem; font-size:1.3rem">Dudas habituales</h2>
         <details open><summary>¿A qué hora se publica el resultado?</summary>
-          <p>Cargamos el resultado de cada sorteo a partir de las 23:00 h de Chile continental, de domingo a viernes. Mientras no esté cargado, la tarjeta principal muestra el estado “A la espera del sorteo”.</p></details>
+          <p>Cargamos el resultado de cada sorteo todos los días a partir de las 23:00 h de Chile continental. Mientras no esté cargado, la tarjeta principal muestra el estado “A la espera del sorteo”.</p></details>
         <details><summary>¿Este sitio es oficial?</summary>
           <p>No. Es un sitio informativo independiente. El resultado válido para el cobro de premios es siempre el que publica el operador del juego y el acta del sorteo correspondiente.</p></details>
         <details><summary>¿Publican los montos de los premios?</summary>
@@ -619,7 +619,6 @@ textarea{min-height:90px; resize:vertical}
   function semilla(){
     var out = [], d = new Date(2026,7,19), num = 2856, k;   /* 19 ago 2026 */
     for(k=0;k<14;k++){
-      while(d.getDay()===6){ d.setDate(d.getDate()-1); }     /* sin sorteo los sábados */
       out.push({
         numero: num, fecha: isoOf(d), nums: sorteoNumeros(),
         publicado: '23:0'+Math.floor(rnd()*9)
@@ -796,7 +795,7 @@ textarea{min-height:90px; resize:vertical}
     { d:'Miércoles', kino:true, otros:['Loto 3 · Loto 4','Toto 3'] },
     { d:'Jueves',  kino:true,  otros:['Loto · Revancha · Desquite','Loto 3 · Loto 4'] },
     { d:'Viernes', kino:true,  otros:['Loto 3 · Loto 4','Polla Gol (cierre)'] },
-    { d:'Sábado',  kino:false, otros:['Loto 3 · Loto 4','Polla Gol'] }
+    { d:'Sábado',  kino:true,  otros:['Loto 3 · Loto 4','Polla Gol'] }
   ];
   function renderCal(){
     var hoy = ahoraCL().getDay();
@@ -846,7 +845,6 @@ textarea{min-height:90px; resize:vertical}
     var n = ahoraCL();
     var t = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23, 0, 0);
     if(n >= t) t.setDate(t.getDate()+1);
-    while(t.getDay()===6) t.setDate(t.getDate()+1);   /* sábado sin sorteo */
     return t;
   }
   function tick(){
@@ -866,7 +864,7 @@ textarea{min-height:90px; resize:vertical}
 
   function ventanaAbierta(){
     var n = ahoraCL();
-    return n.getDay() !== 6 && n.getHours() >= 23;
+    return n.getHours() >= 23;
   }
   function pintarVentana(){
     var n = ahoraCL(), el = document.getElementById('windowNotice');
@@ -876,7 +874,7 @@ textarea{min-height:90px; resize:vertical}
       el.textContent = 'Ventana de carga abierta · '+DIAS[n.getDay()]+' '+hora+' h de Chile. Ya puedes publicar el resultado de hoy.';
     } else {
       el.className = 'notice warn';
-      el.textContent = 'Fuera de la ventana habitual ('+DIAS[n.getDay()]+' '+hora+' h). La carga programada es de domingo a viernes desde las 23:00 h; puedes publicar igual para corregir un sorteo anterior.';
+      el.textContent = 'Fuera de la ventana habitual ('+DIAS[n.getDay()]+' '+hora+' h). La carga programada es todos los días desde las 23:00 h; puedes publicar igual para corregir un sorteo anterior.';
     }
   }
   function construirNumpad(){
