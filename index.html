@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kino del Sur</title>
-<meta name="description" content="Resultados oficiales del Kino y calendario de las loterías de Chile.">
+<meta name="description" content="Resultados diarios de Kino del Sur, el sorteo oficial del Kino de Polla Chilena como referencia, y calendario de las loterías de Chile.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;600&display=swap">
@@ -149,6 +149,23 @@ td.sorteo{color:var(--text-3); font-size:.8rem}
   .ball{animation:drop .45s cubic-bezier(.22,1,.36,1) backwards}
   @keyframes drop{from{transform:translateY(-10px) scale(.85); opacity:0}to{transform:none;opacity:1}}
 }
+/* Kino de Polla: otro juego, otra piel — bolas vacías con borde rojo */
+.polla-grid{display:grid; grid-template-columns:1.25fr 1fr; gap:1.5rem; align-items:start}
+@media(max-width:940px){.polla-grid{grid-template-columns:1fr}}
+.polla-board{padding:1.5rem 1.6rem 1.3rem; position:relative; overflow:hidden}
+.polla-board::before{content:""; position:absolute; inset:0 auto auto 0; height:3px; width:100%; background:var(--rojo)}
+.polla-board h3{font-size:clamp(1.25rem,2.6vw,1.6rem); font-weight:800; line-height:1.1}
+.polla-board h3::first-letter{text-transform:uppercase}
+.balls.polla .ball{background:transparent; color:var(--text); border:2px solid var(--rojo); font-weight:600}
+.badge.polla{color:var(--rojo); border-color:color-mix(in srgb,var(--rojo) 45%,transparent); background:color-mix(in srgb,var(--rojo) 10%,transparent)}
+.aviso-distinto{
+  display:flex; gap:.7rem; align-items:flex-start; padding:.85rem 1rem; border-radius:11px;
+  border:1px dashed color-mix(in srgb,var(--rojo) 50%,transparent); font-size:.86rem; line-height:1.5; color:var(--text-2);
+}
+.aviso-distinto b{color:var(--text)}
+.polla-hist{padding:1.2rem 1.4rem}
+.polla-hist .mini-list li{align-items:flex-start; flex-direction:column; gap:.2rem}
+.polla-hist .nums{font-size:.74rem; letter-spacing:.02em}
 .board-foot{display:flex; gap:1.4rem; flex-wrap:wrap; border-top:1px solid var(--line-soft); margin-top:1.1rem; padding-top:.9rem}
 .stat{display:flex; flex-direction:column; gap:.15rem}
 .stat .v{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:1rem}
@@ -319,6 +336,7 @@ textarea{min-height:90px; resize:vertical}
     <div class="brand"><span class="dot">14</span> Kino <span style="color:var(--gold)">del&nbsp;Sur</span></div>
     <nav class="main">
       <a href="#resultado">Resultado</a>
+      <a href="#kino-polla">Kino Polla</a>
       <a href="#historial">Historial</a>
       <a href="#estadisticas">Estadísticas</a>
       <a href="#loterias">Otras loterías</a>
@@ -342,7 +360,7 @@ textarea{min-height:90px; resize:vertical}
     <article class="card board">
       <div class="board-head">
         <div>
-          <span class="eyebrow">Resultado oficial · Kino</span>
+          <span class="eyebrow">Kino del Sur · sorteo diario</span>
           <h1 id="tituloSorteo">Jueves 20 de agosto de 2026</h1>
           <p class="fecha" id="sorteoFecha">Sorteo N.º 3.268</p>
         </div>
@@ -379,6 +397,46 @@ textarea{min-height:90px; resize:vertical}
     </aside>
   </div>
 
+  <!-- ================= KINO DE POLLA (referencia) ================= -->
+  <section id="kino-polla" hidden>
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Referencia · otro juego</span>
+        <h2>Kino de Polla Chilena</h2>
+      </div>
+      <p>El Kino oficial de Polla Chilena de Beneficencia. Sortea miércoles, viernes y domingo a las 22:30 h. No tiene relación con Kino del Sur: son dos sorteos distintos, con numeración distinta.</p>
+    </div>
+    <div class="polla-grid">
+      <article class="card polla-board">
+        <div class="board-head">
+          <div>
+            <span class="eyebrow">Último sorteo oficial</span>
+            <h3 id="pollaFecha">—</h3>
+            <p class="fecha" id="pollaNum">Sorteo N.º —</p>
+          </div>
+          <span class="badge polla">Polla Chilena</span>
+        </div>
+        <div class="balls polla" id="pollaBalls" aria-label="Números del Kino de Polla"></div>
+        <div class="board-foot">
+          <div class="stat"><span class="eyebrow">Pares / impares</span><span class="v" id="pollaPar">—</span></div>
+          <div class="stat"><span class="eyebrow">Suma de los 14</span><span class="v" id="pollaSuma">—</span></div>
+          <div class="stat"><span class="eyebrow">Próximo sorteo oficial</span><span class="v" id="pollaProx">—</span></div>
+        </div>
+      </article>
+      <div class="rail">
+        <div class="aviso-distinto">
+          <span aria-hidden="true">⚠</span>
+          <span><b>No son el mismo juego.</b> Un cartón de Kino del Sur no participa en el Kino de Polla, ni al revés. El resultado válido para cobrar premios del Kino de Polla es únicamente el que publica <b>polla.cl</b>.</span>
+        </div>
+        <div class="card polla-hist">
+          <span class="eyebrow">Sorteos oficiales anteriores</span>
+          <ul class="mini-list" id="pollaHist"></ul>
+          <p class="hint" style="margin-top:.7rem" id="pollaFuente"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= HISTORIAL ================= -->
   <section id="historial">
     <div class="sec-head">
@@ -410,7 +468,7 @@ textarea{min-height:90px; resize:vertical}
         <span class="eyebrow">Análisis</span>
         <h2>Estadísticas de los números</h2>
       </div>
-      <p>Frecuencia calculada sobre los sorteos publicados en este sitio. El Kino es un juego de azar: los sorteos anteriores no influyen en los próximos.</p>
+      <p>Frecuencia calculada sobre los sorteos publicados en este sitio. Kino del Sur es un juego de azar: los sorteos anteriores no influyen en los próximos.</p>
     </div>
     <div class="stats-grid">
       <div class="card freq">
@@ -461,7 +519,7 @@ textarea{min-height:90px; resize:vertical}
         <span class="eyebrow">Semana tipo</span>
         <h2>Calendario de sorteos</h2>
       </div>
-      <p>El resultado del Kino se publica en este sitio todos los días a partir de las 23:00 h.</p>
+      <p>Kino del Sur sortea todos los días a las 23:00 h. El Kino de Polla Chilena, que es otro juego, sortea miércoles, viernes y domingo a las 22:30 h.</p>
     </div>
     <div class="cal" id="cal"></div>
   </section>
@@ -471,10 +529,10 @@ textarea{min-height:90px; resize:vertical}
     <div class="prose-grid">
       <div>
         <span class="eyebrow">Cómo se juega</span>
-        <h2 style="margin:.35rem 0 .8rem; font-size:1.3rem">El Kino en tres pasos</h2>
+        <h2 style="margin:.35rem 0 .8rem; font-size:1.3rem">Kino del Sur en tres pasos</h2>
         <div class="prose">
           <h3>1. Elige 14 números</h3>
-          <p>Cada cartón del Kino se juega con 14 números distintos del <strong>01 al 25</strong>. Puedes marcarlos tú o pedir una selección al azar en el punto de venta.</p>
+          <p>Cada cartón de Kino del Sur se juega con 14 números distintos del <strong>01 al 25</strong>. Puedes marcarlos tú o pedir una selección al azar en el punto de venta.</p>
           <h3>2. Espera el sorteo</h3>
           <p>En cada sorteo se extraen 14 números. Hay premio a partir de <strong>10 aciertos</strong> y hasta los 14, según las categorías vigentes del juego.</p>
           <h3>3. Revisa y cobra</h3>
@@ -488,8 +546,10 @@ textarea{min-height:90px; resize:vertical}
         <h2 style="margin:.35rem 0 .8rem; font-size:1.3rem">Dudas habituales</h2>
         <details open><summary>¿A qué hora se publica el resultado?</summary>
           <p>Cargamos el resultado de cada sorteo todos los días a partir de las 23:00 h de Chile continental. Mientras no esté cargado, la tarjeta principal muestra el estado “A la espera del sorteo”.</p></details>
+        <details><summary>¿Kino del Sur es el Kino de Polla Chilena?</summary>
+          <p>No. Son dos juegos distintos, de operadores distintos. <strong>Kino del Sur</strong> es un sorteo independiente, diario, con numeración propia. El <strong>Kino de Polla Chilena de Beneficencia</strong> sortea miércoles, viernes y domingo; lo mostramos en este sitio sólo como referencia informativa. Un cartón de uno no participa en el otro.</p></details>
         <details><summary>¿Este sitio es oficial?</summary>
-          <p>No. Es un sitio informativo independiente. El resultado válido para el cobro de premios es siempre el que publica el operador del juego y el acta del sorteo correspondiente.</p></details>
+          <p>Es el sitio de resultados de Kino del Sur. Para el Kino de Polla Chilena no es una fuente oficial: el resultado válido para el cobro de premios es siempre el que publica polla.cl y el acta del sorteo correspondiente.</p></details>
         <details><summary>¿Publican los montos de los premios?</summary>
           <p>No. Aquí encontrarás los 14 números sorteados, la fecha y el número de sorteo. Los premios van desde los 10 hasta los 14 aciertos, pero los montos de cada categoría los informa el operador del juego, que es la fuente válida para el cobro.</p></details>
         <details><summary>¿Sirven las estadísticas para elegir números?</summary>
@@ -505,7 +565,7 @@ textarea{min-height:90px; resize:vertical}
   <div class="wrap foot-grid">
     <div>
       <span class="r18">+18 · Juega con responsabilidad</span>
-      <p><strong>Kino del Sur</strong> es un sitio informativo independiente sobre resultados de loterías chilenas. No vende cartones, no recibe apuestas y no está afiliado a Polla Chilena de Beneficencia ni a Lotería de Concepción.</p>
+      <p><strong>Kino del Sur</strong> es un sorteo independiente, con resultados propios, distinto del Kino de Polla Chilena de Beneficencia. Este sitio no vende cartones, no recibe apuestas y no está afiliado a Polla Chilena ni a Lotería de Concepción; los resultados de esos juegos se muestran sólo como referencia.</p>
       <p style="margin-top:.6rem">Los resultados se cargan manualmente y pueden contener errores de digitación. El documento válido es el acta oficial del sorteo.</p>
     </div>
     <div>
@@ -539,7 +599,7 @@ textarea{min-height:90px; resize:vertical}
     <div class="panel-head">
       <div>
         <span class="eyebrow">Panel de carga</span>
-        <h2 id="panelTitle">Publicar resultado del Kino</h2>
+        <h2 id="panelTitle">Publicar resultado de Kino del Sur</h2>
       </div>
       <button class="btn ghost" id="closePanel" aria-label="Cerrar">✕</button>
     </div>
@@ -757,8 +817,8 @@ textarea{min-height:90px; resize:vertical}
       desc:'Juego de cifras: se apuesta a un número de tres dígitos y se puede jugar al orden exacto o a cualquier orden.' },
     { sig:'L4', nombre:'Loto 4', op:'Lotería de Concepción', formato:'4 cifras (0000–9999)', dias:'Sorteos diarios',
       desc:'La versión de cuatro dígitos, con premio mayor más alto y las mismas modalidades de apuesta que el Loto 3.' },
-    { sig:'KIN', nombre:'Kino', op:'Polla Chilena de Beneficencia', formato:'14 de 25', dias:'Ver calendario',
-      desc:'El juego que sigue este sitio: 14 números del 01 al 25, con premio desde los 10 aciertos hasta los 14.' },
+    { sig:'KIN', nombre:'Kino', op:'Polla Chilena de Beneficencia', formato:'14 de 25', dias:'Mié · Vie · Dom · 22:30',
+      desc:'El Kino oficial de Polla: 14 números del 01 al 25, tres sorteos por semana. No es el mismo juego que Kino del Sur, aunque comparten el formato.' },
     { sig:'XPE', nombre:'Xperto', op:'Polla Chilena de Beneficencia', formato:'Números a elección', dias:'Sorteos frecuentes',
       desc:'Permite decidir cuántos números jugar; a mayor cantidad de aciertos exigidos, mayor es el premio potencial.' },
     { sig:'RAC', nombre:'Racha', op:'Polla Chilena de Beneficencia', formato:'Números + premio instantáneo', dias:'Consultar operador',
@@ -789,12 +849,12 @@ textarea{min-height:90px; resize:vertical}
 
   /* ---------- calendario semanal ---------- */
   var AGENDA = [
-    { d:'Domingo', kino:true,  otros:['Loto · Revancha · Desquite','Loto 3 · Loto 4'] },
+    { d:'Domingo', kino:true,  otros:['Kino Polla · 22:30 h','Loto · Revancha · Desquite','Loto 3 · Loto 4'] },
     { d:'Lunes',   kino:true,  otros:['Loto 3 · Loto 4','Toto 3'] },
     { d:'Martes',  kino:true,  otros:['Loto · Revancha · Desquite','Loto 3 · Loto 4'] },
-    { d:'Miércoles', kino:true, otros:['Loto 3 · Loto 4','Toto 3'] },
+    { d:'Miércoles', kino:true, otros:['Kino Polla · 22:30 h','Loto 3 · Loto 4','Toto 3'] },
     { d:'Jueves',  kino:true,  otros:['Loto · Revancha · Desquite','Loto 3 · Loto 4'] },
-    { d:'Viernes', kino:true,  otros:['Loto 3 · Loto 4','Polla Gol (cierre)'] },
+    { d:'Viernes', kino:true,  otros:['Kino Polla · 22:30 h','Loto 3 · Loto 4','Polla Gol (cierre)'] },
     { d:'Sábado',  kino:true,  otros:['Loto 3 · Loto 4','Polla Gol'] }
   ];
   function renderCal(){
@@ -807,13 +867,55 @@ textarea{min-height:90px; resize:vertical}
       el.className = 'day' + (a.kino ? ' on' : '');
       var li = a.otros.map(function(o){ return '<li>'+o+'</li>'; }).join('');
       el.innerHTML = '<span class="dname">'+a.d+(idx===hoy?' · hoy':'')+'</span>'+
-        '<ul>'+(a.kino?'<li class="kino">Kino · 23:00 h</li>':'<li>Sin sorteo de Kino</li>')+li+'</ul>';
+        '<ul>'+(a.kino?'<li class="kino">Kino del Sur · 23:00 h</li>':'<li>Sin sorteo de Kino</li>')+li+'</ul>';
       c.appendChild(el);
     });
   }
 
+  /* ---------- Kino de Polla Chilena (referencia, leído de kino-polla.json) ---------- */
+  var POLLA_DIAS = [0,3,5];   /* dom · mié · vie */
+  function proximoPolla(){
+    var n = ahoraCL(), t = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 22, 30, 0);
+    if(n >= t) t.setDate(t.getDate()+1);
+    while(POLLA_DIAS.indexOf(t.getDay()) < 0) t.setDate(t.getDate()+1);
+    return t;
+  }
+  function renderPolla(data){
+    var sec = document.getElementById('kino-polla');
+    if(!data || !data.sorteos || !data.sorteos.length){ sec.hidden = true; return; }
+    sec.hidden = false;
+    var s = data.sorteos[0];
+    document.getElementById('pollaFecha').textContent = fechaLarga(s.fecha);
+    document.getElementById('pollaNum').textContent = 'Sorteo N.º ' + NUM.format(s.numero);
+    var cont = document.getElementById('pollaBalls');
+    cont.innerHTML = '';
+    s.nums.forEach(function(n,i){
+      var b = document.createElement('div');
+      b.className = 'ball'; b.textContent = pad(n); b.style.animationDelay = (i*45)+'ms';
+      cont.appendChild(b);
+    });
+    var p = pares(s.nums);
+    document.getElementById('pollaPar').textContent = p+' / '+(14-p);
+    document.getElementById('pollaSuma').textContent = suma(s.nums);
+    var t = proximoPolla();
+    document.getElementById('pollaProx').textContent = cap(DIAS[t.getDay()])+' '+t.getDate()+' · 22:30';
+
+    var ul = document.getElementById('pollaHist');
+    ul.innerHTML = '';
+    data.sorteos.slice(1,6).forEach(function(x){
+      var li = document.createElement('li');
+      li.innerHTML = '<span><strong>'+cap(DIAS[parseISO(x.fecha).getDay()].slice(0,3))+' '+parseISO(x.fecha).getDate()+
+        '</strong> <span class="op">· N.º '+x.numero+'</span></span>'+
+        '<span class="nums">'+x.nums.map(pad).join(' ')+'</span>';
+      ul.appendChild(li);
+    });
+    document.getElementById('pollaFuente').textContent =
+      'Fuente: ' + (data.fuente || 'operador') + '. Referencial; confirma en polla.cl.';
+  }
+
   /* ---------- próximos sorteos de las otras loterías ---------- */
   var OTRAS = [
+    { juego:'Kino Polla', nota:'sorteo oficial · 22:30 h', dias:[0,3,5] },
     { juego:'Loto',      nota:'con Revancha y Desquite', dias:[0,2,4] },
     { juego:'Jubilazo',  nota:'junto al cartón del Loto', dias:[0,2,4] },
     { juego:'Loto 3',    nota:'3 cifras',                 dias:[0,1,2,3,4,5,6] },
@@ -1058,6 +1160,11 @@ textarea{min-height:90px; resize:vertical}
   setInterval(tick, 1000);
   document.getElementById('pendingOpen').addEventListener('click', abrirPanel);
   if(location.hash === '#panel') abrirPanel();
+
+  fetch('kino-polla.json', {cache:'no-store'})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(renderPolla)
+    .catch(function(){ renderPolla(null); });
 
   fetch('resultados.json', {cache:'no-store'})
     .then(function(r){ return r.ok ? r.json() : null; })
