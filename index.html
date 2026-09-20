@@ -149,13 +149,30 @@ td.sorteo{color:var(--text-3); font-size:.8rem}
   .ball{animation:drop .45s cubic-bezier(.22,1,.36,1) backwards}
   @keyframes drop{from{transform:translateY(-10px) scale(.85); opacity:0}to{transform:none;opacity:1}}
 }
+/* ---------- selector de juego ---------- */
+.switch{
+  display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin-top:1.6rem;
+  padding:.35rem; border-radius:14px; background:var(--surface); border:1px solid var(--line);
+}
+.sw{
+  font:inherit; cursor:pointer; border:1px solid transparent; border-radius:10px; background:transparent;
+  color:var(--text-2); padding:.7rem .9rem; text-align:left; display:flex; flex-direction:column; gap:.15rem;
+  font-weight:700; font-size:.98rem; transition:background .15s,color .15s,border-color .15s;
+}
+.sw small{font-family:"IBM Plex Mono",monospace; font-weight:400; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3)}
+.sw:hover{color:var(--text)}
+.sw.sur[aria-selected="true"]{background:var(--ball-bg); color:var(--ball-text); border-color:var(--ball-line)}
+.sw.sur[aria-selected="true"] small{color:inherit; opacity:.75}
+.sw.polla[aria-selected="true"]{background:color-mix(in srgb,var(--rojo) 12%,transparent); color:var(--rojo); border-color:color-mix(in srgb,var(--rojo) 55%,transparent)}
+.sw.polla[aria-selected="true"] small{color:inherit; opacity:.8}
+.board.modo-polla::before{background:var(--rojo)}
+.board.modo-polla .balls .ball{background:transparent; color:var(--text); border:2px solid var(--rojo)}
+.cambiar{
+  font:inherit; font-size:.8rem; font-weight:600; cursor:pointer; background:none; border:0;
+  color:var(--text-3); padding:.3rem 0; text-decoration:underline; text-underline-offset:3px;
+}
+.cambiar:hover{color:var(--gold)}
 /* Kino de Polla: otro juego, otra piel — bolas vacías con borde rojo */
-.polla-grid{display:grid; grid-template-columns:1.25fr 1fr; gap:1.5rem; align-items:start}
-@media(max-width:940px){.polla-grid{grid-template-columns:1fr}}
-.polla-board{padding:1.5rem 1.6rem 1.3rem; position:relative; overflow:hidden}
-.polla-board::before{content:""; position:absolute; inset:0 auto auto 0; height:3px; width:100%; background:var(--rojo)}
-.polla-board h3{font-size:clamp(1.25rem,2.6vw,1.6rem); font-weight:800; line-height:1.1}
-.polla-board h3::first-letter{text-transform:uppercase}
 .balls.polla .ball{background:transparent; color:var(--text); border:2px solid var(--rojo); font-weight:600}
 .badge.polla{color:var(--rojo); border-color:color-mix(in srgb,var(--rojo) 45%,transparent); background:color-mix(in srgb,var(--rojo) 10%,transparent)}
 .aviso-distinto{
@@ -163,9 +180,6 @@ td.sorteo{color:var(--text-3); font-size:.8rem}
   border:1px dashed color-mix(in srgb,var(--rojo) 50%,transparent); font-size:.86rem; line-height:1.5; color:var(--text-2);
 }
 .aviso-distinto b{color:var(--text)}
-.polla-hist{padding:1.2rem 1.4rem}
-.polla-hist .mini-list li{align-items:flex-start; flex-direction:column; gap:.2rem}
-.polla-hist .nums{font-size:.74rem; letter-spacing:.02em}
 .board-foot{display:flex; gap:1.4rem; flex-wrap:wrap; border-top:1px solid var(--line-soft); margin-top:1.1rem; padding-top:.9rem}
 .stat{display:flex; flex-direction:column; gap:.15rem}
 .stat .v{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:1rem}
@@ -336,7 +350,7 @@ textarea{min-height:90px; resize:vertical}
     <div class="brand"><span class="dot">14</span> Kino <span style="color:var(--gold)">del&nbsp;Sur</span></div>
     <nav class="main">
       <a href="#resultado">Resultado</a>
-      <a href="#kino-polla">Kino Polla</a>
+      <a href="#polla">Kino Polla</a>
       <a href="#historial">Historial</a>
       <a href="#estadisticas">Estadísticas</a>
       <a href="#loterias">Otras loterías</a>
@@ -356,11 +370,16 @@ textarea{min-height:90px; resize:vertical}
   </div>
 
   <!-- ================= RESULTADO ================= -->
+  <div class="switch" role="tablist" aria-label="Elegir juego" id="switch">
+    <button class="sw sur" id="swSur" role="tab" aria-selected="true">Kino del Sur <small>Sorteo diario · 23:00 h</small></button>
+    <button class="sw polla" id="swPolla" role="tab" aria-selected="false">Kino de Polla Chilena <small>Mié · Vie · Dom · 22:30 h</small></button>
+  </div>
+
   <div class="hero" id="resultado">
     <article class="card board">
       <div class="board-head">
         <div>
-          <span class="eyebrow">Kino del Sur · sorteo diario</span>
+          <span class="eyebrow" id="boardEyebrow">Kino del Sur · sorteo diario</span>
           <h1 id="tituloSorteo">Jueves 20 de agosto de 2026</h1>
           <p class="fecha" id="sorteoFecha">Sorteo N.º 3.268</p>
         </div>
@@ -373,14 +392,19 @@ textarea{min-height:90px; resize:vertical}
         <div class="stat"><span class="eyebrow">Pares / impares</span><span class="v" id="parImpar">7 / 7</span></div>
         <div class="stat"><span class="eyebrow">Bajos 01–13 / altos 14–25</span><span class="v" id="bajosAltos">7 / 7</span></div>
         <div class="stat"><span class="eyebrow">Suma de los 14</span><span class="v" id="suma">182</span></div>
+        <div class="stat" style="margin-left:auto; justify-content:flex-end"><button class="cambiar" id="cambiarJuego">Ver el Kino de Polla →</button></div>
       </div>
     </article>
 
     <aside class="rail">
+      <div class="aviso-distinto" id="avisoDistinto" hidden>
+        <span aria-hidden="true">⚠</span>
+        <span><b>No es el mismo juego que Kino del Sur.</b> Un cartón de uno no participa en el otro. El resultado válido para cobrar es únicamente el que publica <b>polla.cl</b>. Fuente de estos datos: <span id="pollaFuente">—</span>.</span>
+      </div>
       <div class="pozo">
-        <span class="eyebrow">Próximo sorteo</span>
+        <span class="eyebrow" id="proxEyebrow">Próximo sorteo</span>
         <div class="amount" id="proxTexto">Jueves 20</div>
-        <p style="font-size:.82rem;color:var(--text-2)">23:00 h de Chile continental. El resultado se publica aquí apenas se confirma.</p>
+        <p style="font-size:.82rem;color:var(--text-2)" id="proxDesc">23:00 h de Chile continental. El resultado se publica aquí apenas se confirma.</p>
         <div class="countdown" id="cd">
           <div class="cd-unit"><b id="cdD">00</b><span>días</span></div>
           <div class="cd-unit"><b id="cdH">00</b><span>hrs</span></div>
@@ -397,54 +421,14 @@ textarea{min-height:90px; resize:vertical}
     </aside>
   </div>
 
-  <!-- ================= KINO DE POLLA (referencia) ================= -->
-  <section id="kino-polla" hidden>
-    <div class="sec-head">
-      <div>
-        <span class="eyebrow">Referencia · otro juego</span>
-        <h2>Kino de Polla Chilena</h2>
-      </div>
-      <p>El Kino oficial de Polla Chilena de Beneficencia. Sortea miércoles, viernes y domingo a las 22:30 h. No tiene relación con Kino del Sur: son dos sorteos distintos, con numeración distinta.</p>
-    </div>
-    <div class="polla-grid">
-      <article class="card polla-board">
-        <div class="board-head">
-          <div>
-            <span class="eyebrow">Último sorteo oficial</span>
-            <h3 id="pollaFecha">—</h3>
-            <p class="fecha" id="pollaNum">Sorteo N.º —</p>
-          </div>
-          <span class="badge polla">Polla Chilena</span>
-        </div>
-        <div class="balls polla" id="pollaBalls" aria-label="Números del Kino de Polla"></div>
-        <div class="board-foot">
-          <div class="stat"><span class="eyebrow">Pares / impares</span><span class="v" id="pollaPar">—</span></div>
-          <div class="stat"><span class="eyebrow">Suma de los 14</span><span class="v" id="pollaSuma">—</span></div>
-          <div class="stat"><span class="eyebrow">Próximo sorteo oficial</span><span class="v" id="pollaProx">—</span></div>
-        </div>
-      </article>
-      <div class="rail">
-        <div class="aviso-distinto">
-          <span aria-hidden="true">⚠</span>
-          <span><b>No son el mismo juego.</b> Un cartón de Kino del Sur no participa en el Kino de Polla, ni al revés. El resultado válido para cobrar premios del Kino de Polla es únicamente el que publica <b>polla.cl</b>.</span>
-        </div>
-        <div class="card polla-hist">
-          <span class="eyebrow">Sorteos oficiales anteriores</span>
-          <ul class="mini-list" id="pollaHist"></ul>
-          <p class="hint" style="margin-top:.7rem" id="pollaFuente"></p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ================= HISTORIAL ================= -->
   <section id="historial">
     <div class="sec-head">
       <div>
         <span class="eyebrow">Archivo</span>
-        <h2>Historial de resultados</h2>
+        <h2 id="histTitulo">Historial · Kino del Sur</h2>
       </div>
-      <p>Los últimos 20 sorteos publicados, del más reciente al más antiguo.</p>
+      <p id="histDesc">Los últimos 20 sorteos publicados, del más reciente al más antiguo.</p>
     </div>
     <div class="table-wrap">
       <table>
@@ -466,9 +450,9 @@ textarea{min-height:90px; resize:vertical}
     <div class="sec-head">
       <div>
         <span class="eyebrow">Análisis</span>
-        <h2>Estadísticas de los números</h2>
+        <h2 id="statsTitulo">Estadísticas · Kino del Sur</h2>
       </div>
-      <p>Frecuencia calculada sobre los sorteos publicados en este sitio. Kino del Sur es un juego de azar: los sorteos anteriores no influyen en los próximos.</p>
+      <p id="statsDesc">Frecuencia calculada sobre los sorteos publicados en este sitio. Es un juego de azar: los sorteos anteriores no influyen en los próximos.</p>
     </div>
     <div class="stats-grid">
       <div class="card freq">
@@ -694,6 +678,18 @@ textarea{min-height:90px; resize:vertical}
       nums:[3,4,5,7,10,11,12,13,15,18,19,20,23,25], publicado:null }
   ];
 
+  var modo = 'sur';        /* 'sur' = Kino del Sur · 'polla' = Kino de Polla Chilena */
+  var datosPolla = null;
+  function setModo(m, scroll){
+    modo = (m === 'polla') ? 'polla' : 'sur';
+    document.getElementById('swSur').setAttribute('aria-selected', modo === 'sur');
+    document.getElementById('swPolla').setAttribute('aria-selected', modo === 'polla');
+    document.getElementById('pendingBar').hidden = (modo === 'polla') || !unicos(pendientes).length;
+    try{ localStorage.setItem('kinodelsur.modo', modo); }catch(e){}
+    renderResultado(); renderStats(); tick();
+    if(scroll) document.getElementById('switch').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
   var KEY = 'kinodelsur.pendientes.v1';
   var hist = [];        /* lo que se muestra en pantalla */
   var remotos = [];     /* lo que ya está en resultados.json */
@@ -718,7 +714,7 @@ textarea{min-height:90px; resize:vertical}
     hist = unicos(pendientes.concat(remotos)).slice(0, TOPE);
     var bar = document.getElementById('pendingBar');
     var n = unicos(pendientes).length;
-    if(n){
+    if(n && modo !== 'polla'){
       bar.hidden = false;
       document.getElementById('pendingText').innerHTML = '<strong>Falta publicar:</strong> tienes ' +
         n + ' resultado' + (n>1?'s':'') +
@@ -729,7 +725,28 @@ textarea{min-height:90px; resize:vertical}
 
   /* ---------- resultado principal ---------- */
   function renderResultado(){
-    var s = hist[0];
+    var esPolla = (modo === 'polla');
+    var lista = esPolla ? (datosPolla ? datosPolla.sorteos : []) : hist;
+    var board = document.querySelector('.board');
+    board.classList.toggle('modo-polla', esPolla);
+    document.getElementById('boardEyebrow').textContent =
+      esPolla ? 'Kino de Polla Chilena · sorteo oficial' : 'Kino del Sur · sorteo diario';
+    document.getElementById('cambiarJuego').textContent =
+      esPolla ? '← Volver a Kino del Sur' : 'Ver el Kino de Polla →';
+    document.getElementById('avisoDistinto').hidden = !esPolla;
+    document.getElementById('histTitulo').textContent = esPolla ? 'Historial · Kino de Polla' : 'Historial · Kino del Sur';
+    document.getElementById('histDesc').textContent = esPolla
+      ? 'Los últimos sorteos oficiales de Polla Chilena, del más reciente al más antiguo. Referencial: confirma en polla.cl.'
+      : 'Los últimos 20 sorteos publicados, del más reciente al más antiguo.';
+    document.getElementById('statsTitulo').textContent = esPolla ? 'Estadísticas · Kino de Polla' : 'Estadísticas · Kino del Sur';
+    if(!lista.length){
+      document.getElementById('tituloSorteo').textContent = 'Sin datos por ahora';
+      document.getElementById('sorteoFecha').textContent = '';
+      document.getElementById('balls').innerHTML = '';
+      document.getElementById('histBody').innerHTML = '';
+      return;
+    }
+    var s = lista[0];
     document.getElementById('tituloSorteo').textContent = fechaLarga(s.fecha);
     document.getElementById('sorteoFecha').textContent =
       s.numero ? 'Sorteo N.º '+NUM.format(s.numero) : 'Sorteo sin número informado';
@@ -750,7 +767,10 @@ textarea{min-height:90px; resize:vertical}
 
     var hoy = isoOf(ahoraCL());
     var badge = document.getElementById('pubBadge');
-    if(s.fecha === hoy){
+    if(esPolla){
+      badge.className = 'badge polla';
+      badge.textContent = 'Polla Chilena · oficial';
+    } else if(s.fecha === hoy){
       badge.className = 'badge';
       badge.innerHTML = '<span class="pulse"></span> ' +
         (s.publicado ? 'Publicado '+s.publicado+' h' : 'Resultado de hoy');
@@ -761,7 +781,7 @@ textarea{min-height:90px; resize:vertical}
 
     var tb = document.getElementById('histBody');
     tb.innerHTML = '';
-    hist.forEach(function(x){
+    lista.forEach(function(x){
       var tr = document.createElement('tr');
       tr.innerHTML = '<td>'+fechaLarga(x.fecha)+'</td><td class="num sorteo">'+(x.numero || '—')+'</td>'+
         '<td class="mono" style="font-size:.8rem">'+x.nums.map(pad).join(' ')+'</td>'+
@@ -772,8 +792,10 @@ textarea{min-height:90px; resize:vertical}
 
   /* ---------- estadísticas ---------- */
   function renderStats(){
+    var lista = (modo === 'polla') ? (datosPolla ? datosPolla.sorteos : []) : hist;
+    if(!lista.length){ return; }
     var f = new Array(26).fill(0), totPares = 0, i;
-    hist.forEach(function(s){
+    lista.forEach(function(s){
       s.nums.forEach(function(n){ f[n]++; });
       totPares += pares(s.nums);
     });
@@ -800,8 +822,8 @@ textarea{min-height:90px; resize:vertical}
     };
     pinta('hot', orden.slice(0,5), 'hot');
     pinta('cold', orden.slice(-5).reverse(), 'cold');
-    document.getElementById('kpiSorteos').textContent = hist.length;
-    var mp = totPares/hist.length;
+    document.getElementById('kpiSorteos').textContent = lista.length;
+    var mp = totPares/lista.length;
     document.getElementById('kpiPar').textContent = mp.toFixed(1)+' / '+(14-mp).toFixed(1);
   }
 
@@ -872,45 +894,13 @@ textarea{min-height:90px; resize:vertical}
     });
   }
 
-  /* ---------- Kino de Polla Chilena (referencia, leído de kino-polla.json) ---------- */
+  /* ---------- Kino de Polla Chilena (leído de kino-polla.json) ---------- */
   var POLLA_DIAS = [0,3,5];   /* dom · mié · vie */
   function proximoPolla(){
     var n = ahoraCL(), t = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 22, 30, 0);
     if(n >= t) t.setDate(t.getDate()+1);
     while(POLLA_DIAS.indexOf(t.getDay()) < 0) t.setDate(t.getDate()+1);
     return t;
-  }
-  function renderPolla(data){
-    var sec = document.getElementById('kino-polla');
-    if(!data || !data.sorteos || !data.sorteos.length){ sec.hidden = true; return; }
-    sec.hidden = false;
-    var s = data.sorteos[0];
-    document.getElementById('pollaFecha').textContent = fechaLarga(s.fecha);
-    document.getElementById('pollaNum').textContent = 'Sorteo N.º ' + NUM.format(s.numero);
-    var cont = document.getElementById('pollaBalls');
-    cont.innerHTML = '';
-    s.nums.forEach(function(n,i){
-      var b = document.createElement('div');
-      b.className = 'ball'; b.textContent = pad(n); b.style.animationDelay = (i*45)+'ms';
-      cont.appendChild(b);
-    });
-    var p = pares(s.nums);
-    document.getElementById('pollaPar').textContent = p+' / '+(14-p);
-    document.getElementById('pollaSuma').textContent = suma(s.nums);
-    var t = proximoPolla();
-    document.getElementById('pollaProx').textContent = cap(DIAS[t.getDay()])+' '+t.getDate()+' · 22:30';
-
-    var ul = document.getElementById('pollaHist');
-    ul.innerHTML = '';
-    data.sorteos.slice(1,6).forEach(function(x){
-      var li = document.createElement('li');
-      li.innerHTML = '<span><strong>'+cap(DIAS[parseISO(x.fecha).getDay()].slice(0,3))+' '+parseISO(x.fecha).getDate()+
-        '</strong> <span class="op">· N.º '+x.numero+'</span></span>'+
-        '<span class="nums">'+x.nums.map(pad).join(' ')+'</span>';
-      ul.appendChild(li);
-    });
-    document.getElementById('pollaFuente').textContent =
-      'Fuente: ' + (data.fuente || 'operador') + '. Referencial; confirma en polla.cl.';
   }
 
   /* ---------- próximos sorteos de las otras loterías ---------- */
@@ -950,13 +940,18 @@ textarea{min-height:90px; resize:vertical}
     return t;
   }
   function tick(){
-    var t = proximoSorteo(), n = ahoraCL(), ms = Math.max(0, t-n);
+    var esPolla = (modo === 'polla');
+    var t = esPolla ? proximoPolla() : proximoSorteo(), n = ahoraCL(), ms = Math.max(0, t-n);
+    document.getElementById('proxEyebrow').textContent = esPolla ? 'Próximo sorteo oficial' : 'Próximo sorteo';
+    document.getElementById('proxDesc').textContent = esPolla
+      ? '22:30 h de Chile. Sortea miércoles, viernes y domingo. Aquí se actualiza al publicar.'
+      : '23:00 h de Chile continental. El resultado se publica aquí apenas se confirma.';
     var s = Math.floor(ms/1000);
     document.getElementById('cdD').textContent = pad(Math.floor(s/86400));
     document.getElementById('cdH').textContent = pad(Math.floor(s/3600)%24);
     document.getElementById('cdM').textContent = pad(Math.floor(s/60)%60);
     document.getElementById('cdS').textContent = pad(s%60);
-    document.getElementById('proxTexto').textContent = cap(DIAS[t.getDay()])+' '+t.getDate();
+    document.getElementById('proxTexto').textContent = cap(DIAS[t.getDay()])+' '+t.getDate()+(esPolla ? ' · 22:30' : '');
   }
 
   /* ---------- panel de carga ---------- */
@@ -1151,7 +1146,8 @@ textarea{min-height:90px; resize:vertical}
   function arrancar(datos, respaldo){
     remotos = datos;
     esRespaldo = !!respaldo;
-    pintarTodo();
+    armar();
+    setModo(modoInicial);
   }
   renderLoterias();
   renderCal();
@@ -1163,8 +1159,20 @@ textarea{min-height:90px; resize:vertical}
 
   fetch('kino-polla.json', {cache:'no-store'})
     .then(function(r){ return r.ok ? r.json() : null; })
-    .then(renderPolla)
-    .catch(function(){ renderPolla(null); });
+    .then(function(j){
+      datosPolla = (j && j.sorteos && j.sorteos.length) ? j : null;
+      document.getElementById('pollaFuente').textContent = datosPolla ? (datosPolla.fuente || 'operador') : '—';
+      if(modo === 'polla') { renderResultado(); renderStats(); }
+    })
+    .catch(function(){ datosPolla = null; });
+
+  document.getElementById('swSur').addEventListener('click', function(){ setModo('sur'); });
+  document.getElementById('swPolla').addEventListener('click', function(){ setModo('polla'); });
+  document.getElementById('cambiarJuego').addEventListener('click', function(){ setModo(modo === 'polla' ? 'sur' : 'polla', true); });
+  window.addEventListener('hashchange', function(){ if(location.hash === '#polla') setModo('polla', true); });
+  var modoInicial = 'sur';
+  try{ modoInicial = localStorage.getItem('kinodelsur.modo') || 'sur'; }catch(e){}
+  if(location.hash === '#polla') modoInicial = 'polla';
 
   fetch('resultados.json', {cache:'no-store'})
     .then(function(r){ return r.ok ? r.json() : null; })
