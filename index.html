@@ -371,7 +371,7 @@ textarea{min-height:90px; resize:vertical}
 
   <!-- ================= RESULTADO ================= -->
   <div class="switch" role="tablist" aria-label="Elegir juego" id="switch">
-    <button class="sw sur" id="swSur" role="tab" aria-selected="true">Kino del Sur <small>Sorteo diario · 23:00 h</small></button>
+    <button class="sw sur" id="swSur" role="tab" aria-selected="true">Kino del Sur <small>Sistémico aleatorio · diario 23:00 h</small></button>
     <button class="sw polla" id="swPolla" role="tab" aria-selected="false">Kino de Polla Chilena <small>Mié · Vie · Dom · 22:30 h</small></button>
   </div>
 
@@ -521,6 +521,8 @@ textarea{min-height:90px; resize:vertical}
           <p>En cada sorteo se extraen 14 números. Hay premio a partir de <strong>10 aciertos</strong> y hasta los 14, según las categorías vigentes del juego.</p>
           <h3>3. Revisa y cobra</h3>
           <p>Los premios menores se pagan en la red de agentes; los mayores, en las oficinas del operador, presentando el cartón y tu cédula de identidad. Los cartones tienen un plazo de cobro definido en las bases del juego.</p>
+          <h3>Cómo se sortea</h3>
+          <p>Kino del Sur es un <strong>sorteo sistémico aleatorio</strong>: los 14 números se generan por sistema, sin bolillero físico. Cada sorteo es independiente del anterior y todos los números del 01 al 25 tienen la misma probabilidad de salir.</p>
           <h3>Sobre los montos</h3>
           <p>Este sitio publica los números sorteados, no los valores de los premios. Consulta el monto que corresponde a tu cartón directamente con el operador del juego.</p>
         </div>
@@ -530,6 +532,8 @@ textarea{min-height:90px; resize:vertical}
         <h2 style="margin:.35rem 0 .8rem; font-size:1.3rem">Dudas habituales</h2>
         <details open><summary>¿A qué hora se publica el resultado?</summary>
           <p>Cargamos el resultado de cada sorteo todos los días a partir de las 23:00 h de Chile continental. Mientras no esté cargado, la tarjeta principal muestra el estado “A la espera del sorteo”.</p></details>
+        <details><summary>¿Cómo se sortea Kino del Sur?</summary>
+          <p>Es un <strong>sorteo sistémico aleatorio</strong>: los números se generan por sistema en cada sorteo, no con bolillero físico. El resultado se publica en este sitio a partir de las 23:00 h.</p></details>
         <details><summary>¿Kino del Sur es el Kino de Polla Chilena?</summary>
           <p>No. Son dos juegos distintos, de operadores distintos. <strong>Kino del Sur</strong> es un sorteo independiente, diario, con numeración propia. El <strong>Kino de Polla Chilena de Beneficencia</strong> sortea miércoles, viernes y domingo; lo mostramos en este sitio sólo como referencia informativa. Un cartón de uno no participa en el otro.</p></details>
         <details><summary>¿Este sitio es oficial?</summary>
@@ -549,7 +553,7 @@ textarea{min-height:90px; resize:vertical}
   <div class="wrap foot-grid">
     <div>
       <span class="r18">+18 · Juega con responsabilidad</span>
-      <p><strong>Kino del Sur</strong> es un sorteo independiente, con resultados propios, distinto del Kino de Polla Chilena de Beneficencia. Este sitio no vende cartones, no recibe apuestas y no está afiliado a Polla Chilena ni a Lotería de Concepción; los resultados de esos juegos se muestran sólo como referencia.</p>
+      <p><strong>Kino del Sur</strong> es un sorteo independiente de tipo <strong>sistémico aleatorio</strong>, con resultados propios, distinto del Kino de Polla Chilena de Beneficencia. Este sitio no vende cartones, no recibe apuestas y no está afiliado a Polla Chilena ni a Lotería de Concepción; los resultados de esos juegos se muestran sólo como referencia.</p>
       <p style="margin-top:.6rem">Los resultados se cargan manualmente y pueden contener errores de digitación. El documento válido es el acta oficial del sorteo.</p>
     </div>
     <div>
@@ -730,7 +734,7 @@ textarea{min-height:90px; resize:vertical}
     var board = document.querySelector('.board');
     board.classList.toggle('modo-polla', esPolla);
     document.getElementById('boardEyebrow').textContent =
-      esPolla ? 'Kino de Polla Chilena · sorteo oficial' : 'Kino del Sur · sorteo diario';
+      esPolla ? 'Kino de Polla Chilena · sorteo oficial' : 'Kino del Sur · sorteo sistémico aleatorio';
     document.getElementById('cambiarJuego').textContent =
       esPolla ? '← Volver a Kino del Sur' : 'Ver el Kino de Polla →';
     document.getElementById('avisoDistinto').hidden = !esPolla;
