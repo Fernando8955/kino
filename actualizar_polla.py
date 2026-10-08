@@ -7,7 +7,7 @@ Se ejecuta a mano al publicar; el sitio lee kino-polla.json.
 import json, re, sys, datetime, urllib.request
 
 FUENTE = "https://chileresultados.com"
-CUANTOS = 12
+CUANTOS = 20
 MESES = {m: i for i, m in enumerate(
     ["enero","febrero","marzo","abril","mayo","junio","julio",
      "agosto","septiembre","octubre","noviembre","diciembre"], 1)}
