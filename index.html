@@ -1,10 +1,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>del Sur</title>
-<meta name="description" content="Resultados diarios del sorteo del Sur, con el Kino de Polla Chilena como referencia, y calendario de las loterías de Chile.">
+<meta name="description" content="Resultados diarios del sorteo del Sur y de 中国乐透 (Loto China), con el Kino de Polla Chilena como referencia, y calendario de las loterías de Chile.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;600&display=swap">
 <style>
 /* ---------- tokens: tema claro (base) ---------- */
 :root{
@@ -151,9 +151,10 @@ td.sorteo{color:var(--text-3); font-size:.8rem}
 }
 /* ---------- selector de juego ---------- */
 .switch{
-  display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin-top:1.6rem;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin-top:1.6rem;
   padding:.35rem; border-radius:14px; background:var(--surface); border:1px solid var(--line);
 }
+@media(max-width:700px){.switch{grid-template-columns:1fr}}
 .sw{
   font:inherit; cursor:pointer; border:1px solid transparent; border-radius:10px; background:transparent;
   color:var(--text-2); padding:.7rem .9rem; text-align:left; display:flex; flex-direction:column; gap:.15rem;
@@ -167,6 +168,15 @@ td.sorteo{color:var(--text-3); font-size:.8rem}
 .sw.polla[aria-selected="true"] small{color:inherit; opacity:.8}
 .board.modo-polla::before{background:var(--rojo)}
 .board.modo-polla .balls .ball{background:transparent; color:var(--text); border:2px solid var(--rojo)}
+/* 中国乐透 (Loto China): otro juego, piel jade — 13 de 25 */
+.han{font-family:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif}
+.sw.china[aria-selected="true"]{background:color-mix(in srgb,var(--mint) 12%,transparent); color:var(--mint); border-color:color-mix(in srgb,var(--mint) 55%,transparent)}
+.sw.china[aria-selected="true"] small{color:inherit; opacity:.8}
+.board.modo-china::before{background:var(--mint)}
+.board.modo-china .balls .ball{background:transparent; color:var(--text); border:2px solid var(--mint)}
+.balls.china .ball{background:transparent; color:var(--text); border:2px solid var(--mint); font-weight:600}
+.badge.china{color:var(--mint); border-color:color-mix(in srgb,var(--mint) 45%,transparent); background:color-mix(in srgb,var(--mint) 10%,transparent)}
+.aviso-distinto.china{border-color:color-mix(in srgb,var(--mint) 50%,transparent)}
 .cambiar{
   font:inherit; font-size:.8rem; font-weight:600; cursor:pointer; background:none; border:0;
   color:var(--text-3); padding:.3rem 0; text-decoration:underline; text-underline-offset:3px;
@@ -351,6 +361,7 @@ textarea{min-height:90px; resize:vertical}
     <nav class="main">
       <a href="#resultado">Resultado</a>
       <a href="#polla">Kino Polla</a>
+      <a href="#china" class="han">中国乐透</a>
       <a href="#historial">Historial</a>
       <a href="#estadisticas">Estadísticas</a>
       <a href="#loterias">Otras loterías</a>
@@ -373,6 +384,7 @@ textarea{min-height:90px; resize:vertical}
   <div class="switch" role="tablist" aria-label="Elegir juego" id="switch">
     <button class="sw sur" id="swSur" role="tab" aria-selected="true">del Sur <small>Sistémico aleatorio · diario 23:00 h</small></button>
     <button class="sw polla" id="swPolla" role="tab" aria-selected="false">Kino de Polla Chilena <small>Mié · Vie · Dom · 22:30 h</small></button>
+    <button class="sw china" id="swChina" role="tab" aria-selected="false"><span class="han">中国乐透</span> <small>Loto China · 13 de 25 · diario 23:00 h</small></button>
   </div>
 
   <div class="hero" id="resultado">
@@ -391,7 +403,7 @@ textarea{min-height:90px; resize:vertical}
       <div class="board-foot">
         <div class="stat"><span class="eyebrow">Pares / impares</span><span class="v" id="parImpar">7 / 7</span></div>
         <div class="stat"><span class="eyebrow">Bajos 01–13 / altos 14–25</span><span class="v" id="bajosAltos">7 / 7</span></div>
-        <div class="stat"><span class="eyebrow">Suma de los 14</span><span class="v" id="suma">182</span></div>
+        <div class="stat"><span class="eyebrow" id="sumaLabel">Suma de los 14</span><span class="v" id="suma">182</span></div>
         <div class="stat" style="margin-left:auto; justify-content:flex-end"><button class="cambiar" id="cambiarJuego">Ver el Kino de Polla →</button></div>
       </div>
     </article>
@@ -399,7 +411,7 @@ textarea{min-height:90px; resize:vertical}
     <aside class="rail">
       <div class="aviso-distinto" id="avisoDistinto" hidden>
         <span aria-hidden="true">⚠</span>
-        <span><b>No es el mismo juego que del Sur.</b> Un cartón de uno no participa en el otro. El resultado válido para cobrar es únicamente el que publica <b>polla.cl</b>. Fuente de estos datos: <span id="pollaFuente">—</span>.</span>
+        <span id="avisoTexto"></span>
       </div>
       <div class="pozo">
         <span class="eyebrow" id="proxEyebrow">Próximo sorteo</span>
@@ -478,7 +490,7 @@ textarea{min-height:90px; resize:vertical}
         <div class="card kpi">
           <span class="eyebrow">Pares / impares (promedio)</span>
           <div class="v" id="kpiPar">—</div>
-          <p class="d">Distribución media por sorteo sobre los 14 números.</p>
+          <p class="d">Distribución media por sorteo sobre los números extraídos.</p>
         </div>
       </div>
     </div>
@@ -503,7 +515,7 @@ textarea{min-height:90px; resize:vertical}
         <span class="eyebrow">Semana tipo</span>
         <h2>Calendario de sorteos</h2>
       </div>
-      <p>del Sur sortea todos los días a las 23:00 h. El Kino de Polla Chilena, que es otro juego, sortea miércoles, viernes y domingo a las 22:30 h.</p>
+      <p>del Sur sortea todos los días a las 23:00 h, igual que <span class="han">中国乐透</span> (Loto China), que es un sorteo aparte de 13 números. El Kino de Polla Chilena, que es otro juego más, sortea miércoles, viernes y domingo a las 22:30 h.</p>
     </div>
     <div class="cal" id="cal"></div>
   </section>
@@ -536,6 +548,8 @@ textarea{min-height:90px; resize:vertical}
           <p>Es un <strong>sorteo sistémico aleatorio</strong>: los números se generan por sistema en cada sorteo, no con bolillero físico. El resultado se publica en este sitio a partir de las 23:00 h.</p></details>
         <details><summary>¿del Sur es el Kino de Polla Chilena?</summary>
           <p>No. Son dos juegos distintos, de operadores distintos. <strong>del Sur</strong> es un sorteo independiente, diario, con numeración propia. El <strong>Kino de Polla Chilena de Beneficencia</strong> sortea miércoles, viernes y domingo; lo mostramos en este sitio sólo como referencia informativa. Un cartón de uno no participa en el otro.</p></details>
+        <details><summary>¿Qué es <span class="han">中国乐透</span> (Loto China)?</summary>
+          <p>Es otro sorteo propio de este sitio, distinto del Sur: se juega con <strong>13 números del 01 al 25</strong> y también sortea todos los días a las 23:00 h. Al igual que del Sur, es un <strong>sorteo sistémico aleatorio</strong>, con su propia numeración de sorteos. No es un juego del Estado chino ni de ningún operador extranjero: el nombre es sólo la marca del sorteo. Un cartón de <span class="han">中国乐透</span> no participa en del Sur, y al contrario tampoco.</p></details>
         <details><summary>¿Este sitio es oficial?</summary>
           <p>Es el sitio de resultados del Sur. Para el Kino de Polla Chilena no es una fuente oficial: el resultado válido para el cobro de premios es siempre el que publica polla.cl y el acta del sorteo correspondiente.</p></details>
         <details><summary>¿Publican los montos de los premios?</summary>
@@ -553,7 +567,7 @@ textarea{min-height:90px; resize:vertical}
   <div class="wrap foot-grid">
     <div>
       <span class="r18">+18 · Juega con responsabilidad</span>
-      <p><strong>del Sur</strong> es un sorteo independiente de tipo <strong>sistémico aleatorio</strong>, con resultados propios, distinto del Kino de Polla Chilena de Beneficencia. Este sitio no vende cartones, no recibe apuestas y no está afiliado a Polla Chilena ni a Lotería de Concepción; los resultados de esos juegos se muestran sólo como referencia.</p>
+      <p><strong>del Sur</strong> y <strong class="han">中国乐透</strong> (Loto China, 13 de 25) son sorteos independientes de tipo <strong>sistémico aleatorio</strong>, con resultados y numeración propios, distintos entre sí y distintos del Kino de Polla Chilena de Beneficencia. <span class="han">中国乐透</span> no pertenece a ningún operador de China: el nombre es sólo la marca del sorteo. Este sitio no vende cartones, no recibe apuestas y no está afiliado a Polla Chilena ni a Lotería de Concepción; los resultados de esos juegos se muestran sólo como referencia.</p>
       <p style="margin-top:.6rem">Los resultados se cargan manualmente y pueden contener errores de digitación. El documento válido es el acta oficial del sorteo.</p>
     </div>
     <div>
@@ -682,13 +696,46 @@ textarea{min-height:90px; resize:vertical}
       nums:[3,4,5,7,10,11,12,13,15,18,19,20,23,25], publicado:null }
   ];
 
-  var modo = 'sur';        /* 'sur' = del Sur · 'polla' = Kino de Polla Chilena */
+  /* 'sur' = del Sur · 'polla' = Kino de Polla Chilena · 'china' = 中国乐透 (Loto China) */
+  var JUEGOS = {
+    sur: {
+      cant:14, eyebrow:'del Sur · sorteo sistémico aleatorio', hist:'Historial · del Sur',
+      stats:'Estadísticas · del Sur', ir:'del Sur', orden:0,
+      histDesc:'Los últimos 20 sorteos publicados, del más reciente al más antiguo.',
+      proxEyebrow:'Próximo sorteo',
+      proxDesc:'23:00 h de Chile continental. El resultado se publica aquí apenas se confirma.'
+    },
+    polla: {
+      cant:14, eyebrow:'Kino de Polla Chilena · sorteo oficial', hist:'Historial · Kino de Polla',
+      stats:'Estadísticas · Kino de Polla', ir:'el Kino de Polla', orden:1,
+      histDesc:'Los últimos sorteos oficiales de Polla Chilena, del más reciente al más antiguo. Referencial: confirma en polla.cl.',
+      proxEyebrow:'Próximo sorteo oficial',
+      proxDesc:'22:30 h de Chile. Sortea miércoles, viernes y domingo. Aquí se actualiza al publicar.'
+    },
+    china: {
+      cant:13, eyebrow:'中国乐透 · Loto China · sorteo sistémico aleatorio', hist:'Historial · 中国乐透',
+      stats:'Estadísticas · 中国乐透', ir:'中国乐透', orden:2,
+      histDesc:'Los últimos sorteos de 中国乐透 (Loto China), del más reciente al más antiguo. Se juega con 13 números del 01 al 25.',
+      proxEyebrow:'Próximo sorteo',
+      proxDesc:'23:00 h de Chile continental. Sortea todos los días, igual que del Sur, pero con 13 números.'
+    }
+  };
+  var ORDEN = ['sur','polla','china'];
+  var modo = 'sur';
   var datosPolla = null;
+  var datosChina = null;
+  var fuentePolla = '—';
+  function listaActual(){
+    if(modo === 'polla') return (datosPolla && datosPolla.sorteos) ? datosPolla.sorteos : [];
+    if(modo === 'china') return datosChina || [];
+    return hist;
+  }
   function setModo(m, scroll){
-    modo = (m === 'polla') ? 'polla' : 'sur';
+    modo = JUEGOS[m] ? m : 'sur';
     document.getElementById('swSur').setAttribute('aria-selected', modo === 'sur');
     document.getElementById('swPolla').setAttribute('aria-selected', modo === 'polla');
-    document.getElementById('pendingBar').hidden = (modo === 'polla') || !unicos(pendientes).length;
+    document.getElementById('swChina').setAttribute('aria-selected', modo === 'china');
+    document.getElementById('pendingBar').hidden = (modo !== 'sur') || !unicos(pendientes).length;
     try{ localStorage.setItem('kinodelsur.modo', modo); }catch(e){}
     renderResultado(); renderStats(); tick();
     if(scroll) document.getElementById('switch').scrollIntoView({behavior:'smooth', block:'start'});
@@ -718,7 +765,7 @@ textarea{min-height:90px; resize:vertical}
     hist = unicos(pendientes.concat(remotos)).slice(0, TOPE);
     var bar = document.getElementById('pendingBar');
     var n = unicos(pendientes).length;
-    if(n && modo !== 'polla'){
+    if(n && modo === 'sur'){
       bar.hidden = false;
       document.getElementById('pendingText').innerHTML = '<strong>Falta publicar:</strong> tienes ' +
         n + ' resultado' + (n>1?'s':'') +
@@ -728,39 +775,65 @@ textarea{min-height:90px; resize:vertical}
   }
 
   /* ---------- resultado principal ---------- */
+  function textoAviso(){
+    if(modo === 'polla'){
+      return '<b>No es el mismo juego que del Sur.</b> Un cartón de uno no participa en el otro. ' +
+             'El resultado válido para cobrar es únicamente el que publica <b>polla.cl</b>. ' +
+             'Fuente de estos datos: ' + fuentePolla + '.';
+    }
+    if(modo === 'china'){
+      return '<b>No es el mismo juego que del Sur.</b> <span class="han">中国乐透</span> (Loto China) ' +
+             'se juega con <b>13 números del 01 al 25</b> y tiene su propia numeración de sorteos. ' +
+             'Un cartón de uno no participa en el otro. No pertenece a ningún operador de China: ' +
+             'el nombre es sólo la marca del sorteo.';
+    }
+    return '';
+  }
   function renderResultado(){
-    var esPolla = (modo === 'polla');
-    var lista = esPolla ? (datosPolla ? datosPolla.sorteos : []) : hist;
+    var cfg = JUEGOS[modo], esPolla = (modo === 'polla'), esChina = (modo === 'china');
+    var lista = listaActual();
     var board = document.querySelector('.board');
     board.classList.toggle('modo-polla', esPolla);
-    document.getElementById('boardEyebrow').textContent =
-      esPolla ? 'Kino de Polla Chilena · sorteo oficial' : 'del Sur · sorteo sistémico aleatorio';
-    document.getElementById('cambiarJuego').textContent =
-      esPolla ? '← Volver al sorteo del Sur' : 'Ver el Kino de Polla →';
-    document.getElementById('avisoDistinto').hidden = !esPolla;
-    document.getElementById('histTitulo').textContent = esPolla ? 'Historial · Kino de Polla' : 'Historial · del Sur';
-    document.getElementById('histDesc').textContent = esPolla
-      ? 'Los últimos sorteos oficiales de Polla Chilena, del más reciente al más antiguo. Referencial: confirma en polla.cl.'
-      : 'Los últimos 20 sorteos publicados, del más reciente al más antiguo.';
-    document.getElementById('statsTitulo').textContent = esPolla ? 'Estadísticas · Kino de Polla' : 'Estadísticas · del Sur';
+    board.classList.toggle('modo-china', esChina);
+    document.getElementById('boardEyebrow').textContent = cfg.eyebrow;
+    var sig = ORDEN[(cfg.orden + 1) % ORDEN.length];
+    document.getElementById('cambiarJuego').textContent = 'Ver ' + JUEGOS[sig].ir + ' →';
+    var aviso = document.getElementById('avisoDistinto');
+    aviso.hidden = (modo === 'sur');
+    aviso.classList.toggle('china', esChina);
+    document.getElementById('avisoTexto').innerHTML = textoAviso();
+    document.getElementById('histTitulo').textContent = cfg.hist;
+    document.getElementById('histDesc').textContent = cfg.histDesc;
+    document.getElementById('statsTitulo').textContent = cfg.stats;
     if(!lista.length){
-      document.getElementById('tituloSorteo').textContent = 'Sin datos por ahora';
-      document.getElementById('sorteoFecha').textContent = '';
+      document.getElementById('tituloSorteo').textContent = 'A la espera del primer sorteo';
+      document.getElementById('sorteoFecha').textContent = 'Todav\u00eda no hay resultados publicados de este juego.';
+      document.getElementById('balls').className = 'balls';
       document.getElementById('balls').innerHTML = '';
       document.getElementById('histBody').innerHTML = '';
+      document.getElementById('parImpar').textContent = '\u2014';
+      document.getElementById('bajosAltos').textContent = '\u2014';
+      document.getElementById('sumaLabel').textContent = 'Suma de los '+cfg.cant;
+      document.getElementById('suma').textContent = '\u2014';
+      var b0 = document.getElementById('pubBadge');
+      b0.className = 'badge wait';
+      b0.textContent = 'Sin resultados a\u00fan';
       return;
     }
     var s = lista[0];
     document.getElementById('tituloSorteo').textContent = fechaLarga(s.fecha);
     document.getElementById('sorteoFecha').textContent =
       s.numero ? 'Sorteo N.º '+NUM.format(s.numero) : 'Sorteo sin número informado';
+    var cant = s.nums.length;
     var p = pares(s.nums);
-    document.getElementById('parImpar').textContent = p+' / '+(14-p);
+    document.getElementById('parImpar').textContent = p+' / '+(cant-p);
     var bajos = s.nums.filter(function(n){ return n <= 13; }).length;
-    document.getElementById('bajosAltos').textContent = bajos+' / '+(14-bajos);
+    document.getElementById('bajosAltos').textContent = bajos+' / '+(cant-bajos);
+    document.getElementById('sumaLabel').textContent = 'Suma de los '+cant;
     document.getElementById('suma').textContent = suma(s.nums);
 
     var cont = document.getElementById('balls');
+    cont.className = 'balls' + (esPolla ? ' polla' : '') + (esChina ? ' china' : '');
     cont.innerHTML = '';
     s.nums.forEach(function(n,i){
       var b = document.createElement('div');
@@ -774,6 +847,13 @@ textarea{min-height:90px; resize:vertical}
     if(esPolla){
       badge.className = 'badge polla';
       badge.textContent = 'Polla Chilena · oficial';
+    } else if(esChina && s.fecha === hoy){
+      badge.className = 'badge china';
+      badge.innerHTML = '<span class="pulse"></span> ' +
+        (s.publicado ? 'Publicado '+s.publicado+' h' : 'Resultado de hoy');
+    } else if(esChina){
+      badge.className = 'badge china';
+      badge.textContent = 'Resultado del último sorteo';
     } else if(s.fecha === hoy){
       badge.className = 'badge';
       badge.innerHTML = '<span class="pulse"></span> ' +
@@ -796,8 +876,16 @@ textarea{min-height:90px; resize:vertical}
 
   /* ---------- estadísticas ---------- */
   function renderStats(){
-    var lista = (modo === 'polla') ? (datosPolla ? datosPolla.sorteos : []) : hist;
-    if(!lista.length){ return; }
+    var lista = listaActual();
+    if(!lista.length){
+      document.getElementById('freq').innerHTML = '';
+      document.getElementById('hot').innerHTML = '';
+      document.getElementById('cold').innerHTML = '';
+      document.getElementById('kpiSorteos').textContent = '0';
+      document.getElementById('kpiPar').textContent = '\u2014';
+      return;
+    }
+    var cant = lista[0].nums.length;
     var f = new Array(26).fill(0), totPares = 0, i;
     lista.forEach(function(s){
       s.nums.forEach(function(n){ f[n]++; });
@@ -828,7 +916,7 @@ textarea{min-height:90px; resize:vertical}
     pinta('cold', orden.slice(-5).reverse(), 'cold');
     document.getElementById('kpiSorteos').textContent = lista.length;
     var mp = totPares/lista.length;
-    document.getElementById('kpiPar').textContent = mp.toFixed(1)+' / '+(14-mp).toFixed(1);
+    document.getElementById('kpiPar').textContent = mp.toFixed(1)+' / '+(cant-mp).toFixed(1);
   }
 
   /* ---------- otras loterías de Chile ---------- */
@@ -893,7 +981,8 @@ textarea{min-height:90px; resize:vertical}
       el.className = 'day' + (a.kino ? ' on' : '');
       var li = a.otros.map(function(o){ return '<li>'+o+'</li>'; }).join('');
       el.innerHTML = '<span class="dname">'+a.d+(idx===hoy?' · hoy':'')+'</span>'+
-        '<ul>'+(a.kino?'<li class="kino">del Sur · 23:00 h</li>':'<li>Sin sorteo del Sur</li>')+li+'</ul>';
+        '<ul>'+(a.kino?'<li class="kino">del Sur · 23:00 h</li>':'<li>Sin sorteo del Sur</li>')+
+        '<li class="kino han">中国乐透 · 23:00 h</li>'+li+'</ul>';
       c.appendChild(el);
     });
   }
@@ -944,12 +1033,10 @@ textarea{min-height:90px; resize:vertical}
     return t;
   }
   function tick(){
-    var esPolla = (modo === 'polla');
+    var esPolla = (modo === 'polla'), cfg = JUEGOS[modo] || JUEGOS.sur;
     var t = esPolla ? proximoPolla() : proximoSorteo(), n = ahoraCL(), ms = Math.max(0, t-n);
-    document.getElementById('proxEyebrow').textContent = esPolla ? 'Próximo sorteo oficial' : 'Próximo sorteo';
-    document.getElementById('proxDesc').textContent = esPolla
-      ? '22:30 h de Chile. Sortea miércoles, viernes y domingo. Aquí se actualiza al publicar.'
-      : '23:00 h de Chile continental. El resultado se publica aquí apenas se confirma.';
+    document.getElementById('proxEyebrow').textContent = cfg.proxEyebrow;
+    document.getElementById('proxDesc').textContent = cfg.proxDesc;
     var s = Math.floor(ms/1000);
     document.getElementById('cdD').textContent = pad(Math.floor(s/86400));
     document.getElementById('cdH').textContent = pad(Math.floor(s/3600)%24);
@@ -1165,18 +1252,35 @@ textarea{min-height:90px; resize:vertical}
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(j){
       datosPolla = (j && j.sorteos && j.sorteos.length) ? j : null;
-      document.getElementById('pollaFuente').textContent = datosPolla ? (datosPolla.fuente || 'operador') : '—';
+      fuentePolla = datosPolla ? (datosPolla.fuente || 'operador') : '—';
       if(modo === 'polla') { renderResultado(); renderStats(); }
     })
     .catch(function(){ datosPolla = null; });
 
+  /* 中国乐透 (Loto China): 13 de 25, sorteo propio y diario */
+  fetch('loto-china.json', {cache:'no-store'})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      datosChina = (j && j.length) ? j : null;
+      if(modo === 'china') { renderResultado(); renderStats(); }
+    })
+    .catch(function(){ datosChina = null; });
+
   document.getElementById('swSur').addEventListener('click', function(){ setModo('sur'); });
   document.getElementById('swPolla').addEventListener('click', function(){ setModo('polla'); });
-  document.getElementById('cambiarJuego').addEventListener('click', function(){ setModo(modo === 'polla' ? 'sur' : 'polla', true); });
-  window.addEventListener('hashchange', function(){ if(location.hash === '#polla') setModo('polla', true); });
+  document.getElementById('swChina').addEventListener('click', function(){ setModo('china'); });
+  document.getElementById('cambiarJuego').addEventListener('click', function(){
+    setModo(ORDEN[(JUEGOS[modo].orden + 1) % ORDEN.length], true);
+  });
+  window.addEventListener('hashchange', function(){
+    if(location.hash === '#polla') setModo('polla', true);
+    if(location.hash === '#china') setModo('china', true);
+  });
   var modoInicial = 'sur';
   try{ modoInicial = localStorage.getItem('kinodelsur.modo') || 'sur'; }catch(e){}
+  if(!JUEGOS[modoInicial]) modoInicial = 'sur';
   if(location.hash === '#polla') modoInicial = 'polla';
+  if(location.hash === '#china') modoInicial = 'china';
 
   fetch('resultados.json', {cache:'no-store'})
     .then(function(r){ return r.ok ? r.json() : null; })
